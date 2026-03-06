@@ -1,0 +1,36 @@
+{% extends "base.peb" %}
+{% block title %}Login{% endblock %}
+
+{# Used gemini for specific style adjustments (lines 6,8,23,25,30) #}
+{% block content %}
+<div style="max-width: 500px; margin: 0 auto; padding-top: 2rem;">
+
+    <h2 style="text-align: center; margin-bottom: 2rem;">Login to your account</h2>
+
+    <article>
+        <form action="/login" method="GET">
+
+            <label>
+                Email/Username:
+                <input type="text" name="username" required>
+            </label>
+
+            <label>
+                Password:
+                <input type="password" name="password" required>
+            </label>
+
+            <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-top: 2rem;">
+
+                <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                    <a href="/forgot-password" class="secondary"><small>Forgot your password?</small></a>
+                    <a href="/register" class="secondary"><small>Create a new account</small></a>
+                </div>
+
+                <button type="submit" style="width: auto; margin: 0; padding: 0.5rem 2rem;">Confirm</button>
+            </div>
+
+        </form>
+    </article>
+</div>
+{% endblock %}
