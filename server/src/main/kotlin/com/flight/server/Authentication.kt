@@ -1,0 +1,44 @@
+package com.flight.server
+
+import com.flight.db.DatabaseFactory
+import io.ktor.server.application.Application
+import io.ktor.server.application.install
+import io.ktor.server.auth.Authentication
+import io.ktor.server.auth.UserIdPrincipal
+import io.ktor.server.auth.form
+import io.ktor.server.auth.session
+import io.ktor.server.pebble.respondTemplate
+import io.ktor.server.response.respondRedirect
+import org.jetbrains.exposed.v1.jdbc.transactions.transaction
+
+fun Application.configureAuthentication() {
+    install(Authentication) {
+        form("auth-form") {
+            userParamName = "email"
+            passwordParamName = "password"
+            validate { credentials ->
+                when (checkPass(credentials)) {
+                    true -> UserIdPrincipal(credentials.name.lowercase())
+                    false -> null
+                }
+            }
+            challenge {
+                println("Not logged in")
+                call.respondTemplate("search-form.peb", model = mapOf("active_nav" to "book"))
+            }
+        }
+
+        session<UserSession>("auth-session") {
+            validate { session ->
+                when {
+                    transaction(DatabaseFactory.db)
+                        { findUser(session.email) != null } -> session
+                    else -> null
+                }
+            }
+            challenge {
+                call.respondRedirect("/login")
+            }
+        }
+    }
+}

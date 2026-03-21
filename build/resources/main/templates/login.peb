@@ -8,11 +8,11 @@
     <h2 style="text-align: center; margin-bottom: 2rem;">Login to your account</h2>
 
     <article>
-        <form action="/login" method="GET">
+        <form action="/login" method="POST">
 
             <label>
-                Email/Username:
-                <input type="text" name="username" required>
+                Email:
+                <input type="email" name="email" required>
             </label>
 
             <label>

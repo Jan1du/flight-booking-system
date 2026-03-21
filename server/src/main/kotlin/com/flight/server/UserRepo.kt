@@ -1,0 +1,74 @@
+package com.flight.server
+
+import com.flight.db.DatabaseFactory
+import com.flight.db.User
+import com.flight.db.UserTable
+import com.password4j.Password
+import io.ktor.server.auth.UserPasswordCredential
+import org.jetbrains.exposed.v1.core.eq
+import org.jetbrains.exposed.v1.jdbc.transactions.transaction
+
+const val MIN_PASSWORD_LENGTH = 8
+
+// Password rules
+fun UserPasswordCredential.passwordIsValid() = when {
+    (password.length < MIN_PASSWORD_LENGTH) -> false
+    (password.filter { it.isLetter() }.firstOrNull { it.isUpperCase() } == null) -> false
+    (password.filter { it.isLetter() }.firstOrNull { it.isLowerCase() } == null) -> false
+    (password.firstOrNull { it.isDigit() } == null) -> false
+    (password.any { it.isWhitespace() }) -> false
+    else -> true
+}
+
+// Returns the user with the given email or Null if user doesn't exist
+fun findUser(email: String): User? = User.find { UserTable.email eq email }.firstOrNull()
+
+// Checks if the password matches
+fun checkPass(cred: UserPasswordCredential): Boolean {
+    return transaction(DatabaseFactory.db) {
+        val user = findUser(cred.name.lowercase())
+        if (user == null) {
+            false
+        } else {
+            Password.check(cred.password, user.passwordHash).withScrypt()
+        }
+    }
+}
+
+// Adds a user to the database
+fun addUser(cred: UserPasswordCredential) {
+    transaction (DatabaseFactory.db) {
+        require(findUser(cred.name) == null) { "This email is already registered"}
+        require(cred.passwordIsValid()) { "The password is invalid" }
+
+        val hash = Password.hash(cred.password).addRandomSalt(16).withScrypt()
+
+        User.new {
+            email = cred.name
+            passwordHash = hash.result
+        }
+    }
+}
+
+// Adding other user info to the database
+fun updateFirstName(email: String, newFirstName: String) {
+    transaction (DatabaseFactory.db) {
+        // User is guaranteed to be not null since they are already logged in
+        val user = findUser(email)
+        user!!.firstName = newFirstName
+    }
+}
+
+fun updateLastName(email: String, newLastName: String) {
+    transaction (DatabaseFactory.db) {
+        val user = findUser(email)
+        user!!.lastName = newLastName
+    }
+}
+
+fun updatePhone(email: String, newPhone: String) {
+    transaction (DatabaseFactory.db) {
+        val user = findUser(email)
+        user!!.phoneNo = newPhone
+    }
+}

@@ -1,27 +1,15 @@
+//Used Copilot for help with configuring modular structure
+
 plugins {
-    alias(libs.plugins.kotlin.jvm)
-    alias(libs.plugins.ktor)
+    alias(libs.plugins.kotlin.jvm) apply false
+    alias(libs.plugins.ktor) apply false
 }
 
-group = "com"
+group = "com.flight"
 version = "0.0.1"
 
-application {
-    mainClass = "io.ktor.server.netty.EngineMain"
-}
-
-kotlin {
-    jvmToolchain(21)
-}
-
-dependencies {
-    implementation(libs.ktor.server.core)
-    implementation(libs.ktor.server.netty)
-    implementation(libs.logback.classic)
-    implementation(libs.ktor.server.core)
-    implementation(libs.ktor.server.config.yaml)
-    implementation("io.ktor:ktor-server-status-pages:${version}")
-    implementation("io.ktor:ktor-server-pebble:${version}")
-    testImplementation(libs.ktor.server.test.host)
-    testImplementation(libs.kotlin.test.junit)
+allprojects {
+    repositories {
+        mavenCentral()
+    }
 }

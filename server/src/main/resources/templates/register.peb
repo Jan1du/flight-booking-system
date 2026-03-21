@@ -1,0 +1,34 @@
+{% extends "base.peb" %}
+{% block title %}Register{% endblock %}
+
+{# Used gemini for specific style adjustments (lines 6,8,27,29) #}
+{% block content %}
+<div style="max-width: 500px; margin: 0 auto; padding-top: 2rem;">
+
+    <h2 style="text-align: center; margin-bottom: 2rem;">Create your account</h2>
+
+    <article>
+        <form action="/register" method="POST">
+            <label>
+                Email:
+                <input type="email" name="email" required>
+            </label>
+
+            <label>
+                Password:
+                <input type="password" name="password" required>
+            </label>
+
+            <label>
+                Confirm password:
+                <input type="password" name="confirm_password" required>
+            </label>
+
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 2rem;">
+                <a href="/login" class="secondary"><small>Already have an account?</small></a>
+                <button type="submit" style="width: auto; margin: 0; padding: 0.5rem 2rem;">Confirm</button>
+            </div>
+        </form>
+    </article>
+</div>
+{% endblock %}
