@@ -27,7 +27,7 @@ suspend fun ApplicationCall.registerPage() {
 
 suspend fun ApplicationCall.registerUser() {
     val formParams = receiveParameters()
-    val email = formParams.getOrFail("email").lowercase()
+    val email = formParams.getOrFail("email").lowercase().trim()
     val pass = formParams.getOrFail("password")
     val confirmPass = formParams.getOrFail("confirm_password")
 

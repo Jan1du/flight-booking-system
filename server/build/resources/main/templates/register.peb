@@ -1,7 +1,42 @@
 {% extends "base.peb" %}
 {% block title %}Register{% endblock %}
 
-{# Used gemini for specific style adjustments (lines 6,8,27,29) #}
+{# Used gemini for the toggle password styling (lines 6-38,57-60,71-74) #}
+{% block styles %}
+<style>
+    .password-wrapper {
+        position: relative;
+        display: block;
+    }
+
+    .toggle-password-btn {
+        position: absolute;
+        right: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        background: transparent;
+        border: none;
+        padding: 0;
+        margin: 0;
+        cursor: pointer;
+        color: var(--pico-muted-color);
+        display: flex;
+        align-items: center;
+    }
+
+    .toggle-password-btn:hover {
+        background: transparent;
+        color: var(--pico-color);
+    }
+
+    .password-wrapper input {
+        padding-right: 2.5rem;
+        margin-bottom: 0;
+    }
+</style>
+{% endblock %}
+
+{# Used gemini for specific style adjustments (lines 43,45,80,82) #}
 {% block content %}
 <div style="max-width: 500px; margin: 0 auto; padding-top: 2rem;">
 
@@ -16,12 +51,30 @@
 
             <label>
                 Password:
-                <input type="password" name="password" required>
+                <div class="password-wrapper">
+                    <input type="password" name="password" id="password-input" required>
+
+                    <button type="button" class="toggle-password-btn" id="toggle-password" aria-label="Show password">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path>
+                            <circle cx="12" cy="12" r="3"></circle>
+                        </svg>
+                    </button>
+                </div>
             </label>
 
             <label>
                 Confirm password:
-                <input type="password" name="confirm_password" required>
+                <div class="password-wrapper">
+                    <input type="password" name="confirm_password" id="confirm-password-input" required>
+
+                    <button type="button" class="toggle-password-btn" id="toggle-confirm-password" aria-label="Show password">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path>
+                            <circle cx="12" cy="12" r="3"></circle>
+                        </svg>
+                    </button>
+                </div>
             </label>
 
             <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 2rem;">
@@ -31,4 +84,43 @@
         </form>
     </article>
 </div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const togglePassword = document.getElementById("toggle-password");
+        const passwordInput = document.getElementById("password-input");
+        const toggleConfirmPassword = document.getElementById("toggle-confirm-password");
+        const confirmPasswordInput = document.getElementById("confirm-password-input");
+
+        togglePassword.addEventListener("click", function() {
+            {# Check current type and toggle it #}
+            const currentType = passwordInput.getAttribute("type");
+            const newType = currentType === "password" ? "text" : "password";
+
+            passwordInput.setAttribute("type", newType);
+
+            {# Changing the icon colour #}
+            if (newType === "text") {
+                this.style.color = "var(--pico-primary)";
+            } else {
+                this.style.color = "var(--pico-muted-color)";
+            }
+        });
+
+        toggleConfirmPassword.addEventListener("click", function() {
+            const currentType = confirmPasswordInput.getAttribute("type");
+            const newType = currentType === "password" ? "text" : "password";
+
+            confirmPasswordInput.setAttribute("type", newType);
+
+            if (newType === "text") {
+                this.style.color = "var(--pico-primary)";
+            } else {
+                this.style.color = "var(--pico-muted-color)";
+            }
+        });
+    });
+</script>
 {% endblock %}
