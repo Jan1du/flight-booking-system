@@ -23,8 +23,10 @@ fun Application.configureAuthentication() {
                 }
             }
             challenge {
-                println("Not logged in")
-                call.respondTemplate("search-form.peb", model = mapOf("active_nav" to "book"))
+                call.respondTemplate("login.peb", model = mapOf(
+                    "active_nav" to "login",
+                    "error" to true
+                    ))
             }
         }
 

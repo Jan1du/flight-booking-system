@@ -38,8 +38,8 @@ fun checkPass(cred: UserPasswordCredential): Boolean {
 // Adds a user to the database
 fun addUser(cred: UserPasswordCredential) {
     transaction (DatabaseFactory.db) {
-        require(findUser(cred.name) == null) { "This email is already registered"}
-        require(cred.passwordIsValid()) { "The password is invalid" }
+        require(findUser(cred.name) == null) { "email-error"}
+        require(cred.passwordIsValid()) { "password-error" }
 
         val hash = Password.hash(cred.password).addRandomSalt(16).withScrypt()
 

@@ -44,16 +44,24 @@ suspend fun ApplicationCall.registerUser() {
         } else {
             val error = result.exceptionOrNull()?.message ?: ""
             application.log.error("Registration error: $error")
-            respondRedirect("/register")
+            respondTemplate("register.peb", model = mapOf(
+                "active_nav" to "register",
+                "error" to error
+            ))
         }
     } else {
-        println("ERROR: password not match")
-        respondRedirect("/register")
+        val error = "password-mismatch"
+        respondTemplate("register.peb", model = mapOf(
+            "active_nav" to "register",
+            "error" to error
+        ))
     }
 }
 
 suspend fun ApplicationCall.userInfoPage() {
-    respondTemplate("user-info.peb", model = mapOf("active_nav" to "register"))
+    respondTemplate("user-info.peb", model = mapOf(
+        "logged_in" to true
+        ))
 }
 
 suspend fun ApplicationCall.addUserInfo() {
