@@ -12,12 +12,12 @@ dependencies {
     implementation(libs.exposed.dao)
     implementation(libs.h2)
     implementation(libs.commons.csv)
-    testImplementation(libs.kotlin.test.junit)
+    implementation(libs.password4j)
 }
 
 tasks.register<JavaExec>("syncUsersCsv") {
     group = "database"
-    description = "Dump all User rows from DB to csv/users.csv"
+    description = "Insert all User rows from DB to csv/users.csv"
 
     classpath = sourceSets["main"].runtimeClasspath
     workingDir = rootProject.projectDir

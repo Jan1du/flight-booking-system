@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.flight.server.ApplicationTest" tests="12" skipped="0" failures="0" errors="0" timestamp="2026-03-25T14:18:16.461Z" hostname="JANIDU" time="8.765">
+  <properties/>
+  <testcase name="Login and registration pages loads properly" classname="com.flight.server.ApplicationTest" time="1.468"/>
+  <testcase name="A user who is not logged in cannot access the manage page - will be redirected to login page" classname="com.flight.server.ApplicationTest" time="0.505"/>
+  <testcase name="A user who is not logged in cannot access the user-info page - will be redirected to login page" classname="com.flight.server.ApplicationTest" time="0.488"/>
+  <testcase name="A user who has not logged in will see the option to login or register on the navbar" classname="com.flight.server.ApplicationTest" time="0.474"/>
+  <testcase name="A user who already completed his profile gets redirected to the manage page upon successful login" classname="com.flight.server.ApplicationTest" time="0.755"/>
+  <testcase name="A user who hasn't completed his profile gets redirected to the user-info page upon trying to access the manage page" classname="com.flight.server.ApplicationTest" time="0.741"/>
+  <testcase name="A user who has logged in can see the My Account button on the navbar" classname="com.flight.server.ApplicationTest" time="0.7"/>
+  <testcase name="A user who has logged in and completed the profile can access the manage page" classname="com.flight.server.ApplicationTest" time="0.711"/>
+  <testcase name="Whitespaces at either ends of the input email should be ignored" classname="com.flight.server.ApplicationTest" time="0.689"/>
+  <testcase name="Capital letters in the input email should be ignored" classname="com.flight.server.ApplicationTest" time="0.687"/>
+  <testcase name="Invalid email or password should display an error message" classname="com.flight.server.ApplicationTest" time="0.704"/>
+  <testcase name="A user who successfully registers will be redirected to the user-info page" classname="com.flight.server.ApplicationTest" time="0.716"/>
+  <system-out><![CDATA[2026-03-25 14:18:16.981 [DefaultDispatcher-worker-1 @call-context#6] INFO  io.ktor.test - No ktor.deployment.watch patterns specified, automatic reload is not active.
+2026-03-25 14:18:17.892 [DefaultDispatcher-worker-1 @call-context#6] INFO  io.ktor.test - Application started in 0.923 seconds.
+2026-03-25 14:18:17.894 [DefaultDispatcher-worker-2 @coroutine#8] INFO  io.ktor.test - Responding at http://localhost:80
+2026-03-25 14:18:17.894 [DefaultDispatcher-worker-2 @coroutine#8] INFO  io.ktor.test - Responding at https://localhost:443
+2026-03-25 14:18:18.042 [DefaultDispatcher-worker-3 @call-context#23] INFO  io.ktor.test - No ktor.deployment.watch patterns specified, automatic reload is not active.
+2026-03-25 14:18:18.527 [DefaultDispatcher-worker-3 @call-context#23] INFO  io.ktor.test - Application started in 0.486 seconds.
+2026-03-25 14:18:18.528 [DefaultDispatcher-worker-4 @coroutine#25] INFO  io.ktor.test - Responding at http://localhost:80
+2026-03-25 14:18:18.528 [DefaultDispatcher-worker-4 @coroutine#25] INFO  io.ktor.test - Responding at https://localhost:443
+2026-03-25 14:18:18.548 [DefaultDispatcher-worker-9 @call-context#37] INFO  io.ktor.test - No ktor.deployment.watch patterns specified, automatic reload is not active.
+2026-03-25 14:18:19.024 [DefaultDispatcher-worker-9 @call-context#37] INFO  io.ktor.test - Application started in 0.476 seconds.
+2026-03-25 14:18:19.025 [DefaultDispatcher-worker-2 @coroutine#39] INFO  io.ktor.test - Responding at http://localhost:80
+2026-03-25 14:18:19.025 [DefaultDispatcher-worker-2 @coroutine#39] INFO  io.ktor.test - Responding at https://localhost:443
+2026-03-25 14:18:19.038 [DefaultDispatcher-worker-2 @call-context#51] INFO  io.ktor.test - No ktor.deployment.watch patterns specified, automatic reload is not active.
+2026-03-25 14:18:19.501 [DefaultDispatcher-worker-2 @call-context#51] INFO  io.ktor.test - Application started in 0.464 seconds.
+2026-03-25 14:18:19.501 [DefaultDispatcher-worker-3 @coroutine#53] INFO  io.ktor.test - Responding at http://localhost:80
+2026-03-25 14:18:19.501 [DefaultDispatcher-worker-3 @coroutine#53] INFO  io.ktor.test - Responding at https://localhost:443
+2026-03-25 14:18:19.516 [DefaultDispatcher-worker-11 @call-context#64] INFO  io.ktor.test - No ktor.deployment.watch patterns specified, automatic reload is not active.
+2026-03-25 14:18:19.981 [DefaultDispatcher-worker-11 @call-context#64] INFO  io.ktor.test - Application started in 0.465 seconds.
+2026-03-25 14:18:19.981 [DefaultDispatcher-worker-1 @coroutine#66] INFO  io.ktor.test - Responding at http://localhost:80
+2026-03-25 14:18:19.981 [DefaultDispatcher-worker-1 @coroutine#66] INFO  io.ktor.test - Responding at https://localhost:443
+2026-03-25 14:18:20.243 [DefaultDispatcher-worker-11 @request#64] INFO  io.ktor.test - johndoe@gmail.com logged in
+2026-03-25 14:18:20.275 [DefaultDispatcher-worker-4 @call-context#75] INFO  io.ktor.test - No ktor.deployment.watch patterns specified, automatic reload is not active.
+2026-03-25 14:18:20.743 [DefaultDispatcher-worker-4 @call-context#75] INFO  io.ktor.test - Application started in 0.468 seconds.
+2026-03-25 14:18:20.743 [DefaultDispatcher-worker-7 @coroutine#77] INFO  io.ktor.test - Responding at http://localhost:80
+2026-03-25 14:18:20.743 [DefaultDispatcher-worker-7 @coroutine#77] INFO  io.ktor.test - Responding at https://localhost:443
+2026-03-25 14:18:20.974 [DefaultDispatcher-worker-4 @request#75] INFO  io.ktor.test - peter1973@gmail.com logged in
+2026-03-25 14:18:21.011 [DefaultDispatcher-worker-8 @call-context#91] INFO  io.ktor.test - No ktor.deployment.watch patterns specified, automatic reload is not active.
+2026-03-25 14:18:21.466 [DefaultDispatcher-worker-8 @call-context#91] INFO  io.ktor.test - Application started in 0.455 seconds.
+2026-03-25 14:18:21.466 [DefaultDispatcher-worker-7 @coroutine#93] INFO  io.ktor.test - Responding at http://localhost:80
+2026-03-25 14:18:21.466 [DefaultDispatcher-worker-7 @coroutine#93] INFO  io.ktor.test - Responding at https://localhost:443
+2026-03-25 14:18:21.698 [DefaultDispatcher-worker-8 @request#91] INFO  io.ktor.test - johndoe@gmail.com logged in
+2026-03-25 14:18:21.714 [DefaultDispatcher-worker-3 @call-context#106] INFO  io.ktor.test - No ktor.deployment.watch patterns specified, automatic reload is not active.
+2026-03-25 14:18:22.178 [DefaultDispatcher-worker-3 @call-context#106] INFO  io.ktor.test - Application started in 0.464 seconds.
+2026-03-25 14:18:22.179 [DefaultDispatcher-worker-7 @coroutine#108] INFO  io.ktor.test - Responding at http://localhost:80
+2026-03-25 14:18:22.179 [DefaultDispatcher-worker-7 @coroutine#108] INFO  io.ktor.test - Responding at https://localhost:443
+2026-03-25 14:18:22.411 [DefaultDispatcher-worker-3 @request#106] INFO  io.ktor.test - johndoe@gmail.com logged in
+2026-03-25 14:18:22.427 [DefaultDispatcher-worker-10 @call-context#120] INFO  io.ktor.test - No ktor.deployment.watch patterns specified, automatic reload is not active.
+2026-03-25 14:18:22.882 [DefaultDispatcher-worker-10 @call-context#120] INFO  io.ktor.test - Application started in 0.456 seconds.
+2026-03-25 14:18:22.883 [DefaultDispatcher-worker-8 @coroutine#122] INFO  io.ktor.test - Responding at http://localhost:80
+2026-03-25 14:18:22.883 [DefaultDispatcher-worker-8 @coroutine#122] INFO  io.ktor.test - Responding at https://localhost:443
+2026-03-25 14:18:23.111 [DefaultDispatcher-worker-10 @request#120] INFO  io.ktor.test - johndoe@gmail.com logged in
+2026-03-25 14:18:23.118 [DefaultDispatcher-worker-3 @call-context#130] INFO  io.ktor.test - No ktor.deployment.watch patterns specified, automatic reload is not active.
+2026-03-25 14:18:23.574 [DefaultDispatcher-worker-3 @call-context#130] INFO  io.ktor.test - Application started in 0.456 seconds.
+2026-03-25 14:18:23.575 [DefaultDispatcher-worker-8 @coroutine#132] INFO  io.ktor.test - Responding at http://localhost:80
+2026-03-25 14:18:23.575 [DefaultDispatcher-worker-8 @coroutine#132] INFO  io.ktor.test - Responding at https://localhost:443
+2026-03-25 14:18:23.801 [DefaultDispatcher-worker-3 @request#130] INFO  io.ktor.test - johndoe@gmail.com logged in
+2026-03-25 14:18:23.808 [DefaultDispatcher-worker-2 @call-context#140] INFO  io.ktor.test - No ktor.deployment.watch patterns specified, automatic reload is not active.
+2026-03-25 14:18:24.271 [DefaultDispatcher-worker-2 @call-context#140] INFO  io.ktor.test - Application started in 0.463 seconds.
+2026-03-25 14:18:24.271 [DefaultDispatcher-worker-8 @coroutine#142] INFO  io.ktor.test - Responding at http://localhost:80
+2026-03-25 14:18:24.271 [DefaultDispatcher-worker-8 @coroutine#142] INFO  io.ktor.test - Responding at https://localhost:443
+2026-03-25 14:18:24.514 [DefaultDispatcher-worker-7 @call-context#157] INFO  io.ktor.test - No ktor.deployment.watch patterns specified, automatic reload is not active.
+2026-03-25 14:18:24.978 [DefaultDispatcher-worker-7 @call-context#157] INFO  io.ktor.test - Application started in 0.465 seconds.
+2026-03-25 14:18:24.978 [DefaultDispatcher-worker-8 @coroutine#159] INFO  io.ktor.test - Responding at http://localhost:80
+2026-03-25 14:18:24.979 [DefaultDispatcher-worker-8 @coroutine#159] INFO  io.ktor.test - Responding at https://localhost:443
+2026-03-25 14:18:25.218 [DefaultDispatcher-worker-7 @request#157] INFO  io.ktor.test - rico96121@gmail.com registered successfully
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

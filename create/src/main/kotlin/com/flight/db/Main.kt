@@ -20,12 +20,12 @@ fun main(args: Array<String>) {
         SchemaUtils.drop(UserTable)
         SchemaUtils.create(UserTable)
 
-        addUsers(USER_DATA)
+        addUsers()
     }
 }
 
-private fun addUsers(filename: String) {
-    FileReader(filename).use { reader ->
+private fun addUsers() {
+    FileReader(USER_DATA).use { reader ->
         val records = CSVFormat.DEFAULT.parse(reader).drop(1)
         for (record in records) {
             UserTable.insert {

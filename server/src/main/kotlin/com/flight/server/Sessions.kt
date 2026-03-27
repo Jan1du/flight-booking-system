@@ -10,16 +10,20 @@ import kotlinx.serialization.Serializable
 import java.security.SecureRandom
 
 const val SESSION_KEY_LENGTH = 16
-const val MAX_SESSION_DURATION: Long = 86400  // 24 hours
+const val MAX_SESSION_DURATION: Long = 86400 // 24 hours
 
 @Serializable
-data class UserSession(val email: String)
+data class UserSession(
+    val email: String,
+)
 
 // Used copilot to learn how to generate secure session keys (line 18)
 // Generate random key (32 bytes = 64 hex chars)
-private fun loadSessionKey(): String {
-    return hex(ByteArray(SESSION_KEY_LENGTH).apply { SecureRandom().nextBytes(this) })
-}
+private fun loadSessionKey(): String =
+    hex(
+        ByteArray(SESSION_KEY_LENGTH)
+            .apply { SecureRandom().nextBytes(this) },
+    )
 
 fun Application.configureSessions() {
     val encryptKey = hex(loadSessionKey())

@@ -31,7 +31,7 @@ fun syncUsersCsv(path: String) {
                     user.firstName.orEmpty(),
                     user.lastName.orEmpty(),
                     user.phoneNo.orEmpty(),
-                    user.passwordHash
+                    user.passwordHash,
                 )
             }
 

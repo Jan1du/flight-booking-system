@@ -2,6 +2,8 @@ plugins {
     alias(libs.plugins.kotlin.jvm)
     alias(libs.plugins.ktor)
     alias(libs.plugins.serialization)
+    alias(libs.plugins.ktlint)
+    alias(libs.plugins.detekt)
     application
 }
 
@@ -17,6 +19,14 @@ tasks.named<JavaExec>("run") {
     workingDir = rootProject.projectDir
 }
 
+tasks.test {
+    useJUnitPlatform()
+    testLogging {
+        events("passed", "skipped", "failed")
+        showStandardStreams = true
+    }
+}
+
 dependencies {
     implementation(project(":database"))
 
@@ -25,10 +35,10 @@ dependencies {
     implementation(libs.ktor.server.auth)
     implementation(libs.logback.classic)
     implementation(libs.ktor.server.config.yaml)
-    implementation("io.ktor:ktor-server-status-pages:${project.version}")
-    implementation("io.ktor:ktor-server-pebble:${project.version}")
-    implementation("io.ktor:ktor-server-sessions:${project.version}")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.10.0")
+    implementation(libs.ktor.server.status.pages)
+    implementation(libs.ktor.server.pebble)
+    implementation(libs.ktor.server.sessions)
+    implementation(libs.kotlinx.serialization.json)
     implementation(libs.exposed.core)
     implementation(libs.exposed.jdbc)
     implementation(libs.exposed.dao)
@@ -37,4 +47,6 @@ dependencies {
 
     testImplementation(libs.ktor.server.test.host)
     testImplementation(libs.kotlin.test.junit)
+    testImplementation(libs.kotest.assertions.core)
+    testImplementation(libs.kotest.runner.junit5)
 }

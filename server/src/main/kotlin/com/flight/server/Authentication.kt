@@ -1,6 +1,5 @@
 package com.flight.server
 
-import com.flight.db.DatabaseFactory
 import io.ktor.server.application.Application
 import io.ktor.server.application.install
 import io.ktor.server.auth.Authentication
@@ -9,7 +8,7 @@ import io.ktor.server.auth.form
 import io.ktor.server.auth.session
 import io.ktor.server.pebble.respondTemplate
 import io.ktor.server.response.respondRedirect
-import org.jetbrains.exposed.v1.jdbc.transactions.transaction
+import org.jetbrains.exposed.v1.jdbc.transactions.suspendTransaction
 
 fun Application.configureAuthentication() {
     install(Authentication) {
@@ -17,25 +16,32 @@ fun Application.configureAuthentication() {
             userParamName = "email"
             passwordParamName = "password"
             validate { credentials ->
-                when (checkPass(credentials)) {
-                    true -> UserIdPrincipal(credentials.name.lowercase())
-                    false -> null
+                suspendTransaction {
+                    when (checkPass(credentials)) {
+                        true -> UserIdPrincipal(credentials.name.lowercase().trim())
+                        false -> null
+                    }
                 }
             }
             challenge {
-                call.respondTemplate("login.peb", model = mapOf(
-                    "active_nav" to "login",
-                    "error" to true
-                    ))
+                call.respondTemplate(
+                    "login.peb",
+                    model =
+                        mapOf(
+                            "active_nav" to "login",
+                            "error" to true,
+                        ),
+                )
             }
         }
 
         session<UserSession>("auth-session") {
             validate { session ->
-                when {
-                    transaction(DatabaseFactory.db)
-                        { findUser(session.email) != null } -> session
-                    else -> null
+                suspendTransaction {
+                    when {
+                        findUser(session.email) != null -> session
+                        else -> null
+                    }
                 }
             }
             challenge {

@@ -1,4 +1,4 @@
-//Used Copilot for help with configuring modular structure
+//Used Copilot for help with configuring a modular structure
 
 plugins {
     alias(libs.plugins.kotlin.jvm) apply false
