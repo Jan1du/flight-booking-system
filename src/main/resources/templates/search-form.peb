@@ -1,121 +1,173 @@
 {% extends "base.peb" %}
 
+{% block title %}Book Flights{% endblock %}
+
 {% block styles %}
-{# Used gemini to get help with the precise css (lines 5-31) #}
+.trip-type-grid {
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.trip-option {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    background: var(--surface-soft);
+    border: 1px solid var(--card-border);
+    border-radius: 16px;
+    padding: 0.9rem 1rem;
+}
+
 .passenger-dropdown ul {
     width: 280px;
     padding: 0.5rem;
+    border-radius: 16px;
 }
 
 .passenger-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0.5rem;
+    padding: 0.6rem 0.5rem;
 }
 
 .passenger-row span {
-    font-weight: bold;
-    color: var(--pico-color);
+    font-weight: 600;
 }
 
 .passenger-row input[type="number"] {
-    width: 80px;
+    width: 90px;
     margin-bottom: 0;
-    padding: 0.25rem 0.5rem;
+    padding: 0.3rem 0.55rem;
     text-align: center;
 }
 
 .passenger-dropdown li {
     list-style: none;
 }
+
+.search-card {
+    margin-top: 1.5rem;
+}
+
+.quick-info {
+    margin-top: 2rem;
+}
 {% endblock %}
 
 {% block content %}
-<form action="/search" method="GET">
-    <div class="grid">
-        <label>
-            <input type="radio" name="trip_type" id="trip-one-way" value="one-way" checked>
-            One-way
-        </label>
-        <label>
-            <input type="radio" name="trip_type" id="trip-return" value="return">
-            Return
-        </label>
-    </div>
+<section class="hero">
+    <span class="pill">Plan your next journey</span>
+    <h1>Find and book flights with ease</h1>
+    <p>
+        Search routes, compare cabin options, and organise your trip in one place.
+        This prototype focuses on a clean and user-friendly booking experience.
+    </p>
+</section>
 
-    <div class="grid">
-        <label>
-            From:
-            <input type="text" name="origin" placeholder="City or Airport" required>
-        </label>
-        <label>
-            To:
-            <input type="text" name="destination" placeholder="City or Airport" required>
-        </label>
-    </div>
+<section class="section-card search-card">
+    <h3 class="section-title">Search flights</h3>
+    <p class="section-subtitle">Choose your route, travel date, passengers, and cabin class.</p>
 
-    <div class="grid">
-        <label>
-            Depart:
-            <input type="date" name="depart_date" required>
-        </label>
-        <label>
-            Return:
-            <input type="date" name="return_date" id="return-date" disabled>
-        </label>
-    </div>
+    <form action="/search" method="GET">
+        <div class="grid trip-type-grid">
+            <label class="trip-option">
+                <input type="radio" name="trip_type" id="trip-one-way" value="one-way" checked>
+                <span>One-way</span>
+            </label>
+            <label class="trip-option">
+                <input type="radio" name="trip_type" id="trip-return" value="return">
+                <span>Return</span>
+            </label>
+        </div>
 
-    <div class="grid">
-        <label>
-            Cabin class
-            <select name="cabin_class" required>
-                <option value="economy" selected>Economy</option>
-                <option value="business">Business Class</option>
-                <option value="first">First Class</option>
-            </select>
-        </label>
+        <div class="grid">
+            <label>
+                From
+                <input type="text" name="origin" placeholder="City or airport" required>
+            </label>
 
-        <label>
-            Passengers
-            <details class="dropdown passenger-dropdown">
-                <summary role="button" id="passenger-summary" class="secondary outline">1 Adult</summary>
-                <ul>
-                    <li>
-                        <div class="passenger-row">
-                            <span>Adults (18+)</span>
-                            <input type="number" name="adults" id="num-adults" value="1" min="1" max="9">
-                        </div>
-                    </li>
-                    <li>
-                        <div class="passenger-row">
-                            <span>Children (0-17)</span>
-                            <input type="number" name="children"  id="num-children" value="0" min="0" max="9">
-                        </div>
-                    </li>
-                </ul>
-            </details>
-        </label>
-    </div>
+            <label>
+                To
+                <input type="text" name="destination" placeholder="City or airport" required>
+            </label>
+        </div>
 
-    <div style="text-align: center; margin-top: 2rem;">
-        <button type="submit">Search</button>
-    </div>
+        <div class="grid">
+            <label>
+                Departure date
+                <input type="date" name="depart_date" required>
+            </label>
 
-</form>
+            <label>
+                Return date
+                <input type="date" name="return_date" id="return-date" disabled>
+            </label>
+        </div>
+
+        <div class="grid">
+            <label>
+                Cabin class
+                <select name="cabin_class" required>
+                    <option value="economy" selected>Economy</option>
+                    <option value="business">Business Class</option>
+                    <option value="first">First Class</option>
+                </select>
+            </label>
+
+            <label>
+                Passengers
+                <details class="dropdown passenger-dropdown">
+                    <summary role="button" id="passenger-summary" class="secondary">1 Adult</summary>
+                    <ul>
+                        <li>
+                            <div class="passenger-row">
+                                <span>Adults (18+)</span>
+                                <input type="number" name="adults" id="num-adults" value="1" min="1" max="9">
+                            </div>
+                        </li>
+                        <li>
+                            <div class="passenger-row">
+                                <span>Children (0–17)</span>
+                                <input type="number" name="children" id="num-children" value="0" min="0" max="9">
+                            </div>
+                        </li>
+                    </ul>
+                </details>
+            </label>
+        </div>
+
+        <div class="center-button">
+            <button type="submit">Search available flights</button>
+        </div>
+    </form>
+</section>
+
+<section class="grid feature-grid quick-info">
+    <article class="feature-box">
+        <h4>Flexible booking</h4>
+        <p>Search one-way and return trips with a simple booking flow.</p>
+    </article>
+
+    <article class="feature-box">
+        <h4>Cabin options</h4>
+        <p>Compare economy, business, and first-class choices in one interface.</p>
+    </article>
+
+    <article class="feature-box">
+        <h4>Easy management</h4>
+        <p>Customers can later view and manage existing reservations quickly.</p>
+    </article>
+</section>
 {% endblock %}
 
 {% block scripts %}
-
-{# Used gemini to understand javascript functionality used to change element properties #}
-document.addEventListener("DOMContentLoaded", function() {
-    {# Toggling the return date input #}
+document.addEventListener("DOMContentLoaded", function () {
     const oneWayRadio = document.getElementById("trip-one-way");
     const returnRadio = document.getElementById("trip-return");
     const returnDateInput = document.getElementById("return-date");
 
     function toggleReturnDate() {
-        {# If return is selected then enable the return date input #}
         if (returnRadio.checked) {
             returnDateInput.disabled = false;
             returnDateInput.required = true;
@@ -129,8 +181,7 @@ document.addEventListener("DOMContentLoaded", function() {
     oneWayRadio.addEventListener("change", toggleReturnDate);
     returnRadio.addEventListener("change", toggleReturnDate);
 
-    {# Updating passenger count #}
-    const passengerSummary = document.getElementById("passenger-summary")
+    const passengerSummary = document.getElementById("passenger-summary");
     const adults = document.getElementById("num-adults");
     const children = document.getElementById("num-children");
 
@@ -139,18 +190,17 @@ document.addEventListener("DOMContentLoaded", function() {
         const numChildren = parseInt(children.value) || 0;
         const total = numAdults + numChildren;
 
-        if (total === 1) {
+        if (numAdults === 1 && numChildren === 0) {
             passengerSummary.textContent = "1 Adult";
         } else {
             passengerSummary.textContent = total + " Passengers";
         }
     }
 
+    updatePassengerSummary();
+    toggleReturnDate();
+
     adults.addEventListener("input", updatePassengerSummary);
     children.addEventListener("input", updatePassengerSummary);
-
-    {# Run once to make sure the text is correct on page load #}
-    updatePassengerSummary();
 });
-
 {% endblock %}
