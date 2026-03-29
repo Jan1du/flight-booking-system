@@ -34,6 +34,8 @@ class ApplicationTest :
             }
         }
 
+        // Empty input fields are not necessary to test for login and register since the frontend checks for it
+
         // Login tests
         "A user who is not logged in cannot access the manage page - will be redirected to login page" {
             testApplication {
@@ -613,6 +615,31 @@ class ApplicationTest :
                 val response = client.get("/user-info")
                 assertEquals(HttpStatusCode.OK, response.status)
                 response.bodyAsText() shouldContain "<a href=\"/manage\" class=\"contrast active-link\">"
+            }
+        }
+
+        // Sign out test
+        "A logged user can logout" {
+            testApplication {
+                application { testModule() }
+                val client = createClient { install(HttpCookies) }
+                client.post("/login") {
+                    header(
+                        HttpHeaders.ContentType,
+                        ContentType.Application.FormUrlEncoded.toString(),
+                    )
+                    setBody(
+                        listOf(
+                            "email" to "johndoe@gmail.com",
+                            "password" to "Password123",
+                        ).formUrlEncode(),
+                    )
+                }
+                client.get("/logout")
+                val response = client.get("/")
+                response.bodyAsText() shouldContain "href=\"/login\""
+                response.bodyAsText() shouldContain "href=\"/register\""
+                response.bodyAsText() shouldNotContain "My Account"
             }
         }
     })

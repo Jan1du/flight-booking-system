@@ -1,3 +1,5 @@
+// Creates an initial database file and adds any existing data
+// Run using ./gradlew :create:run before running the main application for the first time
 package com.flight.db
 
 import org.apache.commons.csv.CSVFormat
