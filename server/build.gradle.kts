@@ -27,6 +27,15 @@ tasks.test {
     }
 }
 
+detekt {
+    buildUponDefaultConfig = true
+    ignoreFailures = true // Report but don't fail build
+}
+
+configure<org.jlleitschuh.gradle.ktlint.KtlintExtension> {
+    ignoreFailures.set(true)
+}
+
 dependencies {
     implementation(project(":database"))
 

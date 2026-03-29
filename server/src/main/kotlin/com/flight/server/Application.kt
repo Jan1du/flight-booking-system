@@ -2,6 +2,10 @@ package com.flight.server
 
 import com.flight.db.DatabaseFactory
 import com.flight.db.TestDatabase
+import com.flight.server.auth.configureAuthentication
+import com.flight.server.auth.configureSessions
+import com.flight.server.routes.configureRouting
+import com.flight.server.utils.configureTemplates
 import io.ktor.server.application.Application
 import org.jetbrains.exposed.v1.jdbc.transactions.TransactionManager
 
