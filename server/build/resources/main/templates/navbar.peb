@@ -1,0 +1,32 @@
+{# @pebvariable name="active_nav" type="String" #}
+{# @pebvariable name="logged_in" type="Boolean" #}
+<nav>
+    <ul>
+        <li><a href="/" class="{{ active_nav == 'book' ? 'contrast active-link' : 'secondary' }}">Book</a></li>
+        <li><a href="/manage" class="{{ active_nav == 'manage' ? 'contrast active-link' : 'secondary' }}">Manage</a></li>
+        <li><a href="/about" class="{{ active_nav == 'about' ? 'contrast active-link' : 'secondary' }}">About us</a></li>
+    </ul>
+
+    <ul>
+        {% if logged_in %}
+        <li>
+            <details class="dropdown">
+                <summary style="background: transparent; border: none; box-shadow: none; color: var(--pico-muted-color);">
+                    My Account
+                </summary>
+
+                <ul dir="rtl">
+                    <li><a href="/manage">Manage my tickets</a></li>
+                    <li><a href="/profile">Change my details</a></li>
+                    <li><a href="/support">Customer support</a></li>
+                    <li><a href="/logout">Sign out</a></li>
+                </ul>
+            </details>
+        </li>
+
+        {% else %}
+        <li><a href="/login" class="{{ active_nav == 'login' ? 'contrast active-link' : 'secondary' }}">Login</a></li>
+        <li><a href="/register" class="{{ active_nav == 'register' ? 'contrast active-link' : 'secondary' }}">Register</a></li>
+        {% endif %}
+    </ul>
+</nav>
