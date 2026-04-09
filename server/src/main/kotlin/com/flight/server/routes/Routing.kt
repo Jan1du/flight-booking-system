@@ -2,6 +2,7 @@ package com.flight.server.routes
 
 import com.flight.server.auth.UserSession
 import com.flight.server.repos.findUser
+import com.flight.server.repos.findFlights
 import io.ktor.server.application.Application
 import io.ktor.server.application.ApplicationCall
 import io.ktor.server.auth.authenticate
@@ -12,8 +13,8 @@ import io.ktor.server.routing.post
 import io.ktor.server.routing.routing
 import io.ktor.server.sessions.get
 import io.ktor.server.sessions.sessions
-import org.jetbrains.exposed.v1.jdbc.transactions.suspendTransaction
 import io.ktor.http.Parameters
+import org.jetbrains.exposed.v1.jdbc.transactions.suspendTransaction
 
 fun Application.configureRouting() {
     routing {
@@ -57,6 +58,15 @@ private suspend fun ApplicationCall.displayResults() {
     val returnDate = queryParameters["return_date"]?.trim().orEmpty()
     val cabinClass = queryParameters["cabin_class"]?.trim().orEmpty()
 
+    val flights =
+        findFlights(
+            origin = origin,
+            destination = destination,
+            departDate = departDate,
+            returnDate = returnDate,
+            cabinClass = cabinClass,
+        )
+
     respondTemplate(
         "flight-results.peb",
         model =
@@ -68,7 +78,7 @@ private suspend fun ApplicationCall.displayResults() {
                 "depart_date" to departDate,
                 "return_date" to returnDate,
                 "cabin_class" to cabinClass,
-                "flights" to emptyList<Map<String, String>>(),
+                "flights" to flights,
             ),
     )
 }
