@@ -13,6 +13,7 @@ import io.ktor.server.routing.routing
 import io.ktor.server.sessions.get
 import io.ktor.server.sessions.sessions
 import org.jetbrains.exposed.v1.jdbc.transactions.suspendTransaction
+import io.ktor.http.Parameters
 
 fun Application.configureRouting() {
     routing {
@@ -48,12 +49,26 @@ private suspend fun ApplicationCall.displaySearchForm() {
 }
 
 private suspend fun ApplicationCall.displayResults() {
+    val queryParameters: Parameters = request.queryParameters
+
+    val origin = queryParameters["origin"]?.trim().orEmpty()
+    val destination = queryParameters["destination"]?.trim().orEmpty()
+    val departDate = queryParameters["depart_date"]?.trim().orEmpty()
+    val returnDate = queryParameters["return_date"]?.trim().orEmpty()
+    val cabinClass = queryParameters["cabin_class"]?.trim().orEmpty()
+
     respondTemplate(
         "flight-results.peb",
         model =
             mapOf(
                 "active_nav" to "book",
                 "logged_in" to isLoggedIn(),
+                "origin" to origin,
+                "destination" to destination,
+                "depart_date" to departDate,
+                "return_date" to returnDate,
+                "cabin_class" to cabinClass,
+                "flights" to emptyList<Map<String, String>>(),
             ),
     )
 }
