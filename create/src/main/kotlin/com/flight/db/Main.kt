@@ -19,10 +19,11 @@ fun main(args: Array<String>) {
             addLogger(StdOutSqlLogger)
         }
 
-        SchemaUtils.drop(UserTable)
-        SchemaUtils.create(UserTable)
+        SchemaUtils.drop(FlightTable, UserTable)
+        SchemaUtils.create(UserTable, FlightTable)
 
         addUsers()
+        addFlights()
     }
 }
 
@@ -38,5 +39,49 @@ private fun addUsers() {
                 it[passwordHash] = record[4]
             }
         }
+    }
+}
+
+private fun addFlights() {
+    FlightTable.insert {
+        it[airline] = "SkyJet"
+        it[flightCode] = "SJ102"
+        it[origin] = "London"
+        it[destination] = "Paris"
+        it[departDate] = "2026-05-03"
+        it[returnDate] = "2026-05-10"
+        it[departTime] = "08:30"
+        it[arrivalTime] = "10:50"
+        it[cabinClass] = "economy"
+        it[price] = 120
+        it[seatsAvailable] = 8
+    }
+
+    FlightTable.insert {
+        it[airline] = "EuroAir"
+        it[flightCode] = "EA215"
+        it[origin] = "London"
+        it[destination] = "Rome"
+        it[departDate] = "2026-03-24"
+        it[returnDate] = "2026-03-31"
+        it[departTime] = "13:15"
+        it[arrivalTime] = "16:25"
+        it[cabinClass] = "economy"
+        it[price] = 185
+        it[seatsAvailable] = 5
+    }
+
+    FlightTable.insert {
+        it[airline] = "BlueWings"
+        it[flightCode] = "BW410"
+        it[origin] = "London"
+        it[destination] = "Madrid"
+        it[departDate] = "2026-05-15"
+        it[returnDate] = "2026-05-22"
+        it[departTime] = "09:40"
+        it[arrivalTime] = "13:05"
+        it[cabinClass] = "business"
+        it[price] = 320
+        it[seatsAvailable] = 4
     }
 }
