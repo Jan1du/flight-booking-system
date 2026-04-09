@@ -1,4 +1,34 @@
 {% extends "base.peb" %}
-{% block content %}
 
+{% block content %}
+<h1>Flight Results</h1>
+
+{% if origin or destination %}
+    <p>
+        Showing results
+        {% if origin %}from <strong>{{ origin }}</strong>{% endif %}
+        {% if destination %} to <strong>{{ destination }}</strong>{% endif %}
+        {% if depart_date %} on <strong>{{ depart_date }}</strong>{% endif %}
+    </p>
+{% endif %}
+
+{% if flights and flights | length > 0 %}
+    {% for flight in flights %}
+        <article>
+            <h3>{{ flight.airline }} {{ flight.flightCode }}</h3>
+            <p><strong>Route:</strong> {{ flight.origin }} to {{ flight.destination }}</p>
+            <p><strong>Depart:</strong> {{ flight.departDate }} at {{ flight.departTime }}</p>
+            {% if flight.returnDate %}
+                <p><strong>Return:</strong> {{ flight.returnDate }}</p>
+            {% endif %}
+            <p><strong>Arrival:</strong> {{ flight.arrivalTime }}</p>
+            <p><strong>Cabin:</strong> {{ flight.cabinClass }}</p>
+            <p><strong>Price:</strong> GBP {{ flight.price }}</p>
+            <p><strong>Seats available:</strong> {{ flight.seatsAvailable }}</p>
+        </article>
+        <hr>
+    {% endfor %}
+{% else %}
+    <p>No matching flights found.</p>
+{% endif %}
 {% endblock %}
