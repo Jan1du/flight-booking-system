@@ -14,19 +14,33 @@
 
 {% if flights and flights | length > 0 %}
     {% for flight in flights %}
-        <article>
-            <h3>{{ flight.airline }} {{ flight.flightCode }}</h3>
-            <p><strong>Route:</strong> {{ flight.origin }} to {{ flight.destination }}</p>
-            <p><strong>Depart:</strong> {{ flight.departDate }} at {{ flight.departTime }}</p>
-            {% if flight.returnDate %}
-                <p><strong>Return:</strong> {{ flight.returnDate }}</p>
-            {% endif %}
-            <p><strong>Arrival:</strong> {{ flight.arrivalTime }}</p>
-            <p><strong>Cabin:</strong> {{ flight.cabinClass }}</p>
-            <p><strong>Price:</strong> GBP {{ flight.price }}</p>
-            <p><strong>Seats available:</strong> {{ flight.seatsAvailable }}</p>
+        <article style="border: 1px solid #ddd; border-radius: 12px; padding: 1.25rem; margin-bottom: 1rem;">
+            <div style="display: flex; justify-content: space-between; align-items: start; gap: 1rem;">
+                <div>
+                    <h3 style="margin-bottom: 0.5rem;">{{ flight.airline }} {{ flight.flightCode }}</h3>
+                    <p style="margin-bottom: 0.35rem;"><strong>Route:</strong> {{ flight.origin }} to {{ flight.destination }}</p>
+                    <p style="margin-bottom: 0.35rem;"><strong>Depart:</strong> {{ flight.departDate }} at {{ flight.departTime }}</p>
+                    {% if flight.returnDate %}
+                        <p style="margin-bottom: 0.35rem;"><strong>Return:</strong> {{ flight.returnDate }}</p>
+                    {% endif %}
+                    <p style="margin-bottom: 0.35rem;"><strong>Arrival:</strong> {{ flight.arrivalTime }}</p>
+                    <p style="margin-bottom: 0.35rem;"><strong>Cabin:</strong> {{ flight.cabinClass }}</p>
+                    <p style="margin-bottom: 0;"><strong>Seats available:</strong> {{ flight.seatsAvailable }}</p>
+                </div>
+
+                <div style="min-width: 180px; text-align: right;">
+                    <p style="margin-bottom: 0.35rem; font-size: 0.9rem; color: #666;">
+                        Total price
+                    </p>
+                    <p style="margin-bottom: 0.5rem; font-size: 1.8rem; font-weight: 700; color: #0a5bd8;">
+                        GBP {{ flight.price }}
+                    </p>
+                    <p style="margin: 0; font-size: 0.95rem;">
+                        <strong>Discounts:</strong> None currently available
+                    </p>
+                </div>
+            </div>
         </article>
-        <hr>
     {% endfor %}
 {% else %}
     <p>No matching flights found.</p>
