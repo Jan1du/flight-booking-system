@@ -67,7 +67,6 @@
             <input type="date" name="return_date" id="return-date" disabled>
         </label>
     </div>
-
     <div class="grid">
         <label>
             Cabin class
@@ -78,6 +77,13 @@
             </select>
         </label>
 
+        <label>
+            Maximum price
+            <input type="number" name="max_price" placeholder="e.g. 200" min="0">
+        </label>
+    </div>
+
+    <div class="grid">
         <label>
             Passengers
             <details class="dropdown passenger-dropdown">
@@ -92,7 +98,7 @@
                     <li>
                         <div class="passenger-row">
                             <span>Children (0-17)</span>
-                            <input type="number" name="children"  id="num-children" value="0" min="0" max="9">
+                            <input type="number" name="children" id="num-children" value="0" min="0" max="9">
                         </div>
                     </li>
                 </ul>
