@@ -10,6 +10,7 @@ fun findFlights(
     departDate: String,
     returnDate: String,
     cabinClass: String,
+    maxPrice: String,
 ): List<Map<String, String>> =
     transaction {
         FlightTable
@@ -40,11 +41,15 @@ fun findFlights(
                     returnDate.isBlank() || flight["returnDate"] == returnDate
                 val matchesCabinClass =
                     cabinClass.isBlank() || flight["cabinClass"]!!.equals(cabinClass, ignoreCase = true)
+                val matchesMaxPrice =
+                    maxPrice.isBlank() || flight["price"]!!.toInt() <= maxPrice.toInt()
 
                 matchesOrigin &&
                     matchesDestination &&
                     matchesDepartDate &&
                     matchesReturnDate &&
-                    matchesCabinClass
+                    matchesCabinClass &&
+                    matchesMaxPrice
             }
+            .sortedBy { flight -> flight["price"]!!.toInt() }
     }
