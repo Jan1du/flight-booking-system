@@ -1,8 +1,9 @@
 package com.flight.server.routes
 
 import com.flight.server.auth.UserSession
-import com.flight.server.repos.findUser
 import com.flight.server.repos.findFlights
+import com.flight.server.repos.findUser
+import io.ktor.http.Parameters
 import io.ktor.server.application.Application
 import io.ktor.server.application.ApplicationCall
 import io.ktor.server.auth.authenticate
@@ -13,7 +14,6 @@ import io.ktor.server.routing.post
 import io.ktor.server.routing.routing
 import io.ktor.server.sessions.get
 import io.ktor.server.sessions.sessions
-import io.ktor.http.Parameters
 import org.jetbrains.exposed.v1.jdbc.transactions.suspendTransaction
 
 fun Application.configureRouting() {
@@ -57,6 +57,7 @@ private suspend fun ApplicationCall.displayResults() {
     val departDate = queryParameters["depart_date"]?.trim().orEmpty()
     val returnDate = queryParameters["return_date"]?.trim().orEmpty()
     val cabinClass = queryParameters["cabin_class"]?.trim().orEmpty()
+    val maxPrice = queryParameters["max_price"]?.trim().orEmpty()
 
     val flights =
         findFlights(
@@ -65,6 +66,7 @@ private suspend fun ApplicationCall.displayResults() {
             departDate = departDate,
             returnDate = returnDate,
             cabinClass = cabinClass,
+            maxPrice = maxPrice,
         )
 
     respondTemplate(
@@ -78,6 +80,7 @@ private suspend fun ApplicationCall.displayResults() {
                 "depart_date" to departDate,
                 "return_date" to returnDate,
                 "cabin_class" to cabinClass,
+                "max_price" to maxPrice,
                 "flights" to flights,
             ),
     )
