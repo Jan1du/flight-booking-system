@@ -34,7 +34,7 @@
 {% endblock %}
 
 {% block content %}
-<form action="/search" method="GET">
+<form action="/" method="POST">
     <div class="grid">
         <label>
             <input type="radio" name="trip_type" id="trip-one-way" value="one-way" checked>
@@ -77,13 +77,6 @@
             </select>
         </label>
 
-        <label>
-            Maximum price
-            <input type="number" name="max_price" placeholder="e.g. 200" min="0">
-        </label>
-    </div>
-
-    <div class="grid">
         <label>
             Passengers
             <details class="dropdown passenger-dropdown">
