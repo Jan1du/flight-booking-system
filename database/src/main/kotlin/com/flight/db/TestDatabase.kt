@@ -16,7 +16,7 @@ object TestDatabase {
 
     fun create() {
         transaction(db) {
-            SchemaUtils.drop(FlightTable, UserTable)
+            SchemaUtils.drop(UserTable, FlightTable)
             SchemaUtils.create(UserTable, FlightTable)
 
             val passwordJohn = Password.hash("Password123").addRandomSalt(16).withScrypt()

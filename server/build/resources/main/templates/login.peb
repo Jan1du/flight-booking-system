@@ -1,0 +1,75 @@
+{# @pebvariable name="error" type="Boolean" #}
+{% extends "base.peb" %}
+{% block title %}Login{% endblock %}
+
+{# Used gemini for the toggle password styling (lines 6-38,60-63) #}
+{% block styles %}
+{% include "registration-styles.peb" %}
+{% endblock %}
+
+{# Used gemini for specific style adjustments (lines 43,45,69,71) #}
+{% block content %}
+<div style="max-width: 500px; margin: 0 auto; padding-top: 2rem;">
+
+    <h2 style="text-align: center; margin-bottom: 2rem;">Login to your account</h2>
+
+    <article>
+        <form action="/login" method="POST">
+            <label>
+                Email:
+                <input type="email" name="email" required>
+            </label>
+
+            <label>
+                Password:
+                <div class="password-wrapper">
+                    <input type="password" name="password" id="password-input" required
+                        {% if error %}aria-invalid="true"{% endif %}>
+
+                    <button type="button" class="toggle-password-btn" id="toggle-password" aria-label="Show password">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path>
+                            <circle cx="12" cy="12" r="3"></circle>
+                        </svg>
+                    </button>
+                </div>
+                {% if error %}
+                <small class="error-msg" role="alert">
+                    Invalid email or password
+                </small>
+                {% endif %}
+            </label>
+
+            <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-top: 2rem;">
+                <a href="/register" class="secondary"><small>Create a new account</small></a>
+                <button type="submit" style="width: auto; margin: 0; padding: 0.5rem 2rem;">Confirm</button>
+            </div>
+
+        </form>
+    </article>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const togglePassword = document.getElementById("toggle-password");
+        const passwordInput = document.getElementById("password-input");
+
+        togglePassword.addEventListener("click", function() {
+            {# Check current type and toggle it #}
+            const currentType = passwordInput.getAttribute("type");
+            const newType = currentType === "password" ? "text" : "password";
+
+            passwordInput.setAttribute("type", newType);
+
+            {# Changing the icon colour #}
+            if (newType === "text") {
+                this.style.color = "var(--pico-primary)";
+            } else {
+                this.style.color = "var(--pico-muted-color)";
+            }
+        });
+    });
+</script>
+{% endblock %}
