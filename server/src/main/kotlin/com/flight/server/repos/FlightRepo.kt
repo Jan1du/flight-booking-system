@@ -1,55 +1,40 @@
 package com.flight.server.repos
 
+import com.flight.db.AirportTable
+import com.flight.db.Flight
 import com.flight.db.FlightTable
+import org.jetbrains.exposed.v1.core.and
+import org.jetbrains.exposed.v1.core.eq
+import org.jetbrains.exposed.v1.jdbc.SizedIterable
+import org.jetbrains.exposed.v1.jdbc.emptySized
 import org.jetbrains.exposed.v1.jdbc.selectAll
-import org.jetbrains.exposed.v1.jdbc.transactions.transaction
 
 fun findFlights(
     origin: String,
     destination: String,
-    departDate: String,
-    returnDate: String,
-    cabinClass: String,
-    maxPrice: String,
-): List<Map<String, String>> =
-    transaction {
-        FlightTable
+    date: String,
+): SizedIterable<Flight> {
+    val originAirportId =
+        AirportTable
             .selectAll()
-            .map { row ->
-                mapOf(
-                    "airline" to row[FlightTable.airline],
-                    "flightCode" to row[FlightTable.flightCode],
-                    "origin" to row[FlightTable.origin],
-                    "destination" to row[FlightTable.destination],
-                    "departDate" to row[FlightTable.departDate],
-                    "returnDate" to (row[FlightTable.returnDate] ?: ""),
-                    "departTime" to row[FlightTable.departTime],
-                    "arrivalTime" to row[FlightTable.arrivalTime],
-                    "cabinClass" to row[FlightTable.cabinClass],
-                    "price" to row[FlightTable.price].toString(),
-                    "seatsAvailable" to row[FlightTable.seatsAvailable].toString(),
-                )
-            }
-            .filter { flight ->
-                val matchesOrigin =
-                    origin.isBlank() || flight["origin"]!!.contains(origin, ignoreCase = true)
-                val matchesDestination =
-                    destination.isBlank() || flight["destination"]!!.contains(destination, ignoreCase = true)
-                val matchesDepartDate =
-                    departDate.isBlank() || flight["departDate"] == departDate
-                val matchesReturnDate =
-                    returnDate.isBlank() || flight["returnDate"] == returnDate
-                val matchesCabinClass =
-                    cabinClass.isBlank() || flight["cabinClass"]!!.equals(cabinClass, ignoreCase = true)
-                val matchesMaxPrice =
-                    maxPrice.isBlank() || flight["price"]!!.toInt() <= maxPrice.toInt()
+            .where { AirportTable.name eq origin }
+            .singleOrNull()
+            ?.get(AirportTable.id)
 
-                matchesOrigin &&
-                    matchesDestination &&
-                    matchesDepartDate &&
-                    matchesReturnDate &&
-                    matchesCabinClass &&
-                    matchesMaxPrice
-            }
-            .sortedBy { flight -> flight["price"]!!.toInt() }
+    val destinationAirportId =
+        AirportTable
+            .selectAll()
+            .where { AirportTable.name eq destination }
+            .singleOrNull()
+            ?.get(AirportTable.id)
+
+    if (originAirportId == null || destinationAirportId == null) {
+        return emptySized()
     }
+
+    return Flight.find {
+        (FlightTable.departureAirport eq originAirportId) and
+            (FlightTable.arrivalAirport eq destinationAirportId) and
+            (FlightTable.date eq date)
+    }
+}

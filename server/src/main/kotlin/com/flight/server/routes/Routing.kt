@@ -1,24 +1,28 @@
 package com.flight.server.routes
 
+import com.flight.db.Airline
+import com.flight.db.Airport
 import com.flight.server.auth.UserSession
 import com.flight.server.repos.findFlights
 import com.flight.server.repos.findUser
-import io.ktor.http.Parameters
 import io.ktor.server.application.Application
 import io.ktor.server.application.ApplicationCall
 import io.ktor.server.auth.authenticate
 import io.ktor.server.pebble.respondTemplate
+import io.ktor.server.request.receiveParameters
 import io.ktor.server.response.respondRedirect
 import io.ktor.server.routing.get
 import io.ktor.server.routing.post
 import io.ktor.server.routing.routing
 import io.ktor.server.sessions.get
 import io.ktor.server.sessions.sessions
+import io.ktor.server.util.getOrFail
 import org.jetbrains.exposed.v1.jdbc.transactions.suspendTransaction
 
 fun Application.configureRouting() {
     routing {
         get("/") { call.displaySearchForm() }
+        post("/") { call.displayResults() }
         authenticate("auth-session") {
             get("/manage") { call.displayManage() }
             get("/user-info") { call.userInfoPage() }
@@ -32,7 +36,6 @@ fun Application.configureRouting() {
         authenticate("auth-form") {
             post("/login") { call.loginUser() }
         }
-        get("/search") { call.displayResults() }
     }
 }
 
@@ -50,40 +53,39 @@ private suspend fun ApplicationCall.displaySearchForm() {
 }
 
 private suspend fun ApplicationCall.displayResults() {
-    val queryParameters: Parameters = request.queryParameters
+    suspendTransaction {
+        val formParams = receiveParameters()
 
-    val origin = queryParameters["origin"]?.trim().orEmpty()
-    val destination = queryParameters["destination"]?.trim().orEmpty()
-    val departDate = queryParameters["depart_date"]?.trim().orEmpty()
-    val returnDate = queryParameters["return_date"]?.trim().orEmpty()
-    val cabinClass = queryParameters["cabin_class"]?.trim().orEmpty()
-    val maxPrice = queryParameters["max_price"]?.trim().orEmpty()
+        val origin = formParams.getOrFail("origin")
+        val destination = formParams.getOrFail("destination")
+        val departDate = formParams.getOrFail("depart_date")
+        val returnDate = formParams["return_date"] ?: ""
+        val cabinClass = formParams.getOrFail("cabin_class")
 
-    val flights =
-        findFlights(
-            origin = origin,
-            destination = destination,
-            departDate = departDate,
-            returnDate = returnDate,
-            cabinClass = cabinClass,
-            maxPrice = maxPrice,
+        val flights =
+            findFlights(
+                origin = origin,
+                destination = destination,
+                date = departDate,
+            )
+        val count = flights.count()
+
+        respondTemplate(
+            "flight-results.peb",
+            model =
+                mapOf(
+                    "active_nav" to "book",
+                    "logged_in" to isLoggedIn(),
+                    "origin" to origin,
+                    "destination" to destination,
+                    "depart_date" to departDate,
+                    "return_date" to returnDate,
+                    "cabin_class" to cabinClass,
+                    "flights" to flights.toList(),
+                    "count" to count,
+                ),
         )
-
-    respondTemplate(
-        "flight-results.peb",
-        model =
-            mapOf(
-                "active_nav" to "book",
-                "logged_in" to isLoggedIn(),
-                "origin" to origin,
-                "destination" to destination,
-                "depart_date" to departDate,
-                "return_date" to returnDate,
-                "cabin_class" to cabinClass,
-                "max_price" to maxPrice,
-                "flights" to flights,
-            ),
-    )
+    }
 }
 
 private suspend fun ApplicationCall.displayManage() {
