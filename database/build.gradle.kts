@@ -23,4 +23,3 @@ tasks.register<JavaExec>("syncUsersCsv") {
     workingDir = rootProject.projectDir
     mainClass.set("com.flight.db.SyncUsersCsvKt")
 }
-

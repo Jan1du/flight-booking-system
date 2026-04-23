@@ -642,6 +642,59 @@ class ApplicationTest :
                 response.bodyAsText() shouldNotContain "My Account"
             }
         }
+
+        // Flight search tests
+        "A user can search for a flight and see the matching result" {
+            testApplication {
+                application { testModule() }
+                val response =
+                    client.post("/") {
+                        header(
+                            HttpHeaders.ContentType,
+                            ContentType.Application.FormUrlEncoded.toString(),
+                        )
+                        setBody(
+                            listOf(
+                                "origin" to "Heathrow",
+                                "destination" to "Charles de Gaulle",
+                                "depart_date" to "2026-05-03",
+                                "cabin_class" to "economy",
+                            ).formUrlEncode(),
+                        )
+                    }
+
+                checkForHtml(response)
+                response.bodyAsText() shouldContain "SkyJet"
+                response.bodyAsText() shouldContain "Heathrow to Charles de Gaulle"
+                response.bodyAsText() shouldContain "2026-05-03 at 08:30"
+                response.bodyAsText() shouldContain "GBP 120.00"
+            }
+        }
+
+        "A user searching for a flight with no matching result will see a no results message" {
+            testApplication {
+                application { testModule() }
+                val response =
+                    client.post("/") {
+                        header(
+                            HttpHeaders.ContentType,
+                            ContentType.Application.FormUrlEncoded.toString(),
+                        )
+                        setBody(
+                            listOf(
+                                "origin" to "Heathrow",
+                                "destination" to "Charles de Gaulle",
+                                "depart_date" to "2026-06-01",
+                                "cabin_class" to "economy",
+                            ).formUrlEncode(),
+                        )
+                    }
+
+                checkForHtml(response)
+                response.bodyAsText() shouldContain "No matching flights found."
+                response.bodyAsText() shouldNotContain "SkyJet"
+            }
+        }
     })
 
 fun checkForHtml(response: HttpResponse) {
