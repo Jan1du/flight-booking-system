@@ -617,6 +617,35 @@ class ApplicationTest :
                 response.bodyAsText() shouldContain "<a href=\"/manage\" class=\"contrast active-link\">"
             }
         }
+        
+        // Flight search tests
+        "A user can search for a flight and see the matching result" {
+            testApplication {
+                application { testModule() }
+                val response =
+                    client
+                        .get("/search?origin=Heathrow&destination=Charles%20de%20Gaulle&depart_date=2026-05-03&cabin_class=economy")
+                        .also { checkForHtml(it) }
+
+                response.bodyAsText() shouldContain "SkyJet"
+                response.bodyAsText() shouldContain "Heathrow to Charles de Gaulle"
+                response.bodyAsText() shouldContain "2026-05-03 at 08:30"
+                response.bodyAsText() shouldContain "GBP 120.00"
+            }
+        }
+
+        "A user searching for a flight with no matching result will see a no results message" {
+            testApplication {
+                application { testModule() }
+                val response =
+                    client
+                        .get("/search?origin=Heathrow&destination=Charles%20de%20Gaulle&depart_date=2026-06-01&cabin_class=economy")
+                        .also { checkForHtml(it) }
+
+                response.bodyAsText() shouldContain "No matching flights found."
+                response.bodyAsText() shouldNotContain "SkyJet"
+            }
+        }
 
         // Sign out test
         "A logged user can logout" {
