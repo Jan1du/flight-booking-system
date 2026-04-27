@@ -8,14 +8,9 @@
 {% block content %}
 <h1>Flight Results</h1>
 
-{% if origin != "" or destination != "" %}
-    <p>
-        Showing results
-        {% if origin != "" %}from <strong>{{ origin }}</strong>{% endif %}
-        {% if destination != "" %} to <strong>{{ destination }}</strong>{% endif %}
-        {% if depart_date != "" %} on <strong>{{ depart_date }}</strong>{% endif %}
-    </p>
-{% endif %}
+<p>
+    Showing results from <strong>{{ origin }}</strong> to <strong>{{ destination }}</strong> on <strong>{{ depart_date }}</strong>
+</p>
 
 {% for flight in flights %}
     <article style="border: 1px solid #ddd; border-radius: 12px; padding: 1.25rem; margin-bottom: 1rem;">
@@ -49,7 +44,5 @@
     </article>
 {% endfor %}
 
-{% if flights | length == 0 %}
-    <p>No matching flights found.</p>
-{% endif %}
+<p>No matching flights found.</p>
 {% endblock %}
