@@ -9,12 +9,12 @@
 {% block content %}
 <h1>Flight Results</h1>
 
-{% if origin or destination %}
+{% if origin != "" or destination != "" %}
     <p>
         Showing results
-        {% if origin %}from <strong>{{ origin }}</strong>{% endif %}
-        {% if destination %} to <strong>{{ destination }}</strong>{% endif %}
-        {% if depart_date %} on <strong>{{ depart_date }}</strong>{% endif %}
+        {% if origin != "" %}from <strong>{{ origin }}</strong>{% endif %}
+        {% if destination != "" %} to <strong>{{ destination }}</strong>{% endif %}
+        {% if depart_date != "" %} on <strong>{{ depart_date }}</strong>{% endif %}
     </p>
 {% endif %}
 
@@ -33,7 +33,7 @@
                         {{ flight.date }} at {{ flight.departureTime }}
                     </p>
                     <p style="margin-bottom: 0.35rem;"><strong>Arrival:</strong> {{ flight.arrivalTime }}</p>
-                    <p style="margin-bottom: 0.35rem;"><strong>Cabin:</strong> {{ cabin_class }} </p>
+                    <p style="margin-bottom: 0.35rem;"><strong>Cabin:</strong> {{ cabin_class }}</p>
                 </div>
 
                 <div style="min-width: 180px; text-align: right;">
