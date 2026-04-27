@@ -3,54 +3,46 @@
 {# @pebvariable name="destination" type="String" #}
 {# @pebvariable name="depart_date" type="String" #}
 {# @pebvariable name="cabin_class" type="String" #}
-{# @pebvariable name="count" type="Int" #}
 {# @pebvariable name="flights" type="List<Flight>" #}
 
 {% block content %}
 <h1>Flight Results</h1>
 
-{% if origin or destination %}
-    <p>
-        Showing results
-        {% if origin %}from <strong>{{ origin }}</strong>{% endif %}
-        {% if destination %} to <strong>{{ destination }}</strong>{% endif %}
-        {% if depart_date %} on <strong>{{ depart_date }}</strong>{% endif %}
-    </p>
-{% endif %}
+<p>
+    Showing results from <strong>{{ origin }}</strong> to <strong>{{ destination }}</strong> on <strong>{{ depart_date }}</strong>
+</p>
 
-{% if count > 0 %}
-    {% for flight in flights %}
-        <article style="border: 1px solid #ddd; border-radius: 12px; padding: 1.25rem; margin-bottom: 1rem;">
-            <div style="display: flex; justify-content: space-between; align-items: start; gap: 1rem;">
-                <div>
-                    <h3 style="margin-bottom: 0.5rem;">
-                        {{ flight.airline.name }}
-                    </h3>
-                    <p style="margin-bottom: 0.35rem;"><strong>Route:</strong>
-                        {{ flight.departureAirport.name }} to {{ flight.arrivalAirport.name }}
-                    </p>
-                    <p style="margin-bottom: 0.35rem;"><strong>Depart:</strong>
-                        {{ flight.date }} at {{ flight.departureTime }}
-                    </p>
-                    <p style="margin-bottom: 0.35rem;"><strong>Arrival:</strong> {{ flight.arrivalTime }}</p>
-                    <p style="margin-bottom: 0.35rem;"><strong>Cabin:</strong> {{ cabin_class }} </p>
-                </div>
-
-                <div style="min-width: 180px; text-align: right;">
-                    <p style="margin-bottom: 0.35rem; font-size: 0.9rem; color: #666;">
-                        Total price
-                    </p>
-                    <p style="margin-bottom: 0.5rem; font-size: 1.8rem; font-weight: 700; color: #0a5bd8;">
-                        GBP {{ flight.defaultPrice }}
-                    </p>
-                    <p style="margin: 0; font-size: 0.95rem;">
-                        <strong>Discounts:</strong> None currently available
-                    </p>
-                </div>
+{% for flight in flights %}
+    <article style="border: 1px solid #ddd; border-radius: 12px; padding: 1.25rem; margin-bottom: 1rem;">
+        <div style="display: flex; justify-content: space-between; align-items: start; gap: 1rem;">
+            <div>
+                <h3 style="margin-bottom: 0.5rem;">
+                    {{ flight.airline.name }}
+                </h3>
+                <p style="margin-bottom: 0.35rem;"><strong>Route:</strong>
+                    {{ flight.departureAirport.name }} to {{ flight.arrivalAirport.name }}
+                </p>
+                <p style="margin-bottom: 0.35rem;"><strong>Depart:</strong>
+                    {{ flight.date }} at {{ flight.departureTime }}
+                </p>
+                <p style="margin-bottom: 0.35rem;"><strong>Arrival:</strong> {{ flight.arrivalTime }}</p>
+                <p style="margin-bottom: 0.35rem;"><strong>Cabin:</strong> {{ cabin_class }}</p>
             </div>
-        </article>
-    {% endfor %}
-{% else %}
-    <p>No matching flights found.</p>
-{% endif %}
+
+            <div style="min-width: 180px; text-align: right;">
+                <p style="margin-bottom: 0.35rem; font-size: 0.9rem; color: #666;">
+                    Total price
+                </p>
+                <p style="margin-bottom: 0.5rem; font-size: 1.8rem; font-weight: 700; color: #0a5bd8;">
+                    GBP {{ flight.defaultPrice }}
+                </p>
+                <p style="margin: 0; font-size: 0.95rem;">
+                    <strong>Discounts:</strong> None currently available
+                </p>
+            </div>
+        </div>
+    </article>
+{% endfor %}
+
+<p>No matching flights found.</p>
 {% endblock %}
