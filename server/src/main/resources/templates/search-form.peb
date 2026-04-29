@@ -1,8 +1,28 @@
 {% extends "base.peb" %}
 
 {% block styles %}
-{# Used gemini to get help with the precise css (lines 6-32) #}
+{# Used AI to help with small CSS layout improvements #}
 <style>
+    .search-title {
+        margin-bottom: 1.5rem;
+    }
+
+    .search-title p {
+        color: #5f748c;
+        margin-bottom: 1rem;
+    }
+
+    .trip-option {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-weight: 600;
+    }
+
+    .grid {
+        margin-bottom: 1rem;
+    }
+
     .passenger-dropdown ul {
         width: 280px;
         padding: 0.5rem;
@@ -30,17 +50,27 @@
     .passenger-dropdown li {
         list-style: none;
     }
+
+    .search-button {
+        width: 100%;
+        font-weight: 600;
+    }
 </style>
 {% endblock %}
 
 {% block content %}
 <form action="/" method="POST">
+    <div class="search-title">
+        <h2>Search Flights</h2>
+        <p>Enter your journey details below to find available flights.</p>
+    </div>
+
     <div class="grid">
-        <label>
+        <label class="trip-option">
             <input type="radio" name="trip_type" id="trip-one-way" value="one-way" checked>
             One-way
         </label>
-        <label>
+        <label class="trip-option">
             <input type="radio" name="trip_type" id="trip-return" value="return">
             Return
         </label>
@@ -67,6 +97,7 @@
             <input type="date" name="return_date" id="return-date" disabled>
         </label>
     </div>
+
     <div class="grid">
         <label>
             Cabin class
@@ -99,16 +130,14 @@
         </label>
     </div>
 
-    <div style="text-align: center; margin-top: 2rem;">
-        <button type="submit">Search</button>
+    <div style="margin-top: 2rem;">
+        <button type="submit" class="search-button">Search flights</button>
     </div>
-
 </form>
 {% endblock %}
 
 {% block scripts %}
-
-{# Used gemini to understand javascript functionality used to change element properties #}
+{# Used AI to understand JavaScript functionality used to change element properties #}
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         {# Toggling the return date input #}
@@ -132,7 +161,7 @@
         returnRadio.addEventListener("change", toggleReturnDate);
 
         {# Updating passenger count #}
-        const passengerSummary = document.getElementById("passenger-summary")
+        const passengerSummary = document.getElementById("passenger-summary");
         const adults = document.getElementById("num-adults");
         const children = document.getElementById("num-children");
 
@@ -152,6 +181,7 @@
         children.addEventListener("input", updatePassengerSummary);
 
         {# Run once to make sure the text is correct on page load #}
+        toggleReturnDate();
         updatePassengerSummary();
     });
 </script>
