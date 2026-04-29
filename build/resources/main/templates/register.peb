@@ -8,7 +8,7 @@
     <h2 style="text-align: center; margin-bottom: 2rem;">Create your account</h2>
 
     <article>
-        <form action="/register" method="GET">
+        <form action="/register" method="POST">
 
             <label>
                 Email:
