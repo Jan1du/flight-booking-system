@@ -17,7 +17,7 @@ data class UserSession(
     val email: String,
 )
 
-// Used copilot to learn how to generate secure session keys (line 18)
+// Used copilot to learn how to generate secure session keys (line 22-26)
 // Generate random key (32 bytes = 64 hex chars)
 private fun loadSessionKey(): String =
     hex(

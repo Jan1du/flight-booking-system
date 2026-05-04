@@ -34,7 +34,7 @@
 {% endblock %}
 
 {% block content %}
-<form action="/" method="POST">
+<form action="/search" method="GET">
     <div class="grid">
         <label>
             <input type="radio" name="trip_type" id="trip-one-way" value="one-way" checked>

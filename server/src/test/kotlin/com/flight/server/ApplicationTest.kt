@@ -648,19 +648,14 @@ class ApplicationTest :
             testApplication {
                 application { testModule() }
                 val response =
-                    client.post("/") {
-                        header(
-                            HttpHeaders.ContentType,
-                            ContentType.Application.FormUrlEncoded.toString(),
-                        )
-                        setBody(
-                            listOf(
-                                "origin" to "Heathrow",
-                                "destination" to "Charles de Gaulle",
-                                "depart_date" to "2026-05-03",
-                                "cabin_class" to "economy",
-                            ).formUrlEncode(),
-                        )
+                    client.get("/search") {
+                        url {
+                            parameters.append("trip_type", "one-way")
+                            parameters.append("origin", "Heathrow")
+                            parameters.append("destination", "Charles de Gaulle")
+                            parameters.append("depart_date", "2026-05-03")
+                            parameters.append("cabin_class", "economy")
+                        }
                     }
 
                 checkForHtml(response)
@@ -675,19 +670,14 @@ class ApplicationTest :
             testApplication {
                 application { testModule() }
                 val response =
-                    client.post("/") {
-                        header(
-                            HttpHeaders.ContentType,
-                            ContentType.Application.FormUrlEncoded.toString(),
-                        )
-                        setBody(
-                            listOf(
-                                "origin" to "Heathrow",
-                                "destination" to "Charles de Gaulle",
-                                "depart_date" to "2026-06-01",
-                                "cabin_class" to "economy",
-                            ).formUrlEncode(),
-                        )
+                    client.get("/search") {
+                        url {
+                            parameters.append("trip_type", "one-way")
+                            parameters.append("origin", "Heathrow")
+                            parameters.append("destination", "Charles de Gaulle")
+                            parameters.append("depart_date", "2026-06-01")
+                            parameters.append("cabin_class", "economy")
+                        }
                     }
 
                 checkForHtml(response)

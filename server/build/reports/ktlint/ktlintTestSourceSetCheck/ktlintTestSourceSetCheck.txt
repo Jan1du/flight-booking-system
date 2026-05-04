@@ -1,0 +1,5 @@
+[90mC:\Users\janid\Documents\MyProjects\flight-booking-system\server\src\test\kotlin\com\flight\server\[0mApplicationTest.kt[90m:[0m650[90m:32:[0m A multiline expression should start on a new line [90m(standard:multiline-expression-wrapping)[0m
+[90mC:\Users\janid\Documents\MyProjects\flight-booking-system\server\src\test\kotlin\com\flight\server\[0mApplicationTest.kt[90m:[0m671[90m:32:[0m A multiline expression should start on a new line [90m(standard:multiline-expression-wrapping)[0m
+
+Summary error count (descending) by rule:
+  standard:multiline-expression-wrapping: 2
