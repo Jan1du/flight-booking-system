@@ -1,6 +1,6 @@
 {# Base template #}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -21,9 +21,17 @@
         html,
         body {
             margin: 0;
-            min-height: 100%;
-            background: linear-gradient(135deg, #eaf6ff 0%, #f8fbff 45%, #dceeff 100%);
-            color: #1d3557;
+            min-height: 100vh;
+
+            background: linear-gradient(
+                rgba(255, 255, 255, 0.85),
+                rgba(255, 255, 255, 0.85)
+            ),
+            url("https://images.unsplash.com/photo-1436491865332-7a61a109cc05");
+
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
         }
 
         body {
