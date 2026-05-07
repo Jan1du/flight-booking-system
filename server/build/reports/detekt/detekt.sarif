@@ -4,6 +4,28 @@
   "runs": [
     {
       "results": [
+        {
+          "level": "warning",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Users/janid/Documents/MyProjects/flight-booking-system/server/src/test/kotlin/com/flight/server/ApplicationTest.kt"
+                },
+                "region": {
+                  "endColumn": 22,
+                  "endLine": 25,
+                  "startColumn": 7,
+                  "startLine": 25
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Class ApplicationTest is too large. Consider splitting it into smaller pieces."
+          },
+          "ruleId": "detekt.complexity.LargeClass"
+        }
       ],
       "tool": {
         "driver": {

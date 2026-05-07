@@ -9,6 +9,10 @@ import io.ktor.server.util.getOrFail
 import org.jetbrains.exposed.v1.jdbc.SizedIterable
 import org.jetbrains.exposed.v1.jdbc.transactions.suspendTransaction
 
+const val DEFAULT_PRICE_MULTI = 1.0
+const val BUSINESS_PRICE_MULTI = 1.5
+const val FIRST_PRICE_MULTI = 2.0
+
 private fun getFlightInfo(
     origin: String,
     destination: String,
@@ -26,10 +30,10 @@ private fun getFlightInfo(
 
 private fun getPriceMulti(cabin: String) =
     when (cabin) {
-        "economy" -> 1.0
-        "business" -> 1.5
-        "first" -> 2.0
-        else -> 1.0
+        "economy" -> DEFAULT_PRICE_MULTI
+        "business" -> BUSINESS_PRICE_MULTI
+        "first" -> FIRST_PRICE_MULTI
+        else -> DEFAULT_PRICE_MULTI
     }
 
 suspend fun ApplicationCall.displaySearchForm() {

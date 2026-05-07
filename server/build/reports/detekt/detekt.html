@@ -157,11 +157,11 @@
 
 <div>
   <ul>
-    <li>85 number of properties</li>
-    <li>30 number of functions</li>
+    <li>100 number of properties</li>
+    <li>34 number of functions</li>
     <li>2 number of classes</li>
     <li>5 number of packages</li>
-    <li>12 number of kt files</li>
+    <li>13 number of kt files</li>
   </ul>
 </div>
 
@@ -170,25 +170,43 @@
 
 <div>
   <ul>
-    <li>1,252 lines of code (loc)</li>
-    <li>1,097 source lines of code (sloc)</li>
-    <li>760 logical lines of code (lloc)</li>
-    <li>32 comment lines of code (cloc)</li>
-    <li>66 cyclomatic complexity (mcc)</li>
-    <li>38 cognitive complexity</li>
-    <li>0 number of total code smells</li>
-    <li>2% comment source ratio</li>
-    <li>86 mcc per 1,000 lloc</li>
-    <li>0 code smells per 1,000 lloc</li>
+    <li>1,369 lines of code (loc)</li>
+    <li>1,198 source lines of code (sloc)</li>
+    <li>835 logical lines of code (lloc)</li>
+    <li>36 comment lines of code (cloc)</li>
+    <li>77 cyclomatic complexity (mcc)</li>
+    <li>39 cognitive complexity</li>
+    <li>1 number of total code smells</li>
+    <li>3% comment source ratio</li>
+    <li>92 mcc per 1,000 lloc</li>
+    <li>1 code smells per 1,000 lloc</li>
   </ul>
 </div>
 
 
 <h2>Findings</h2>
-<div>Total: 0</div>
+<div>Total: 1
+  <h3>complexity: 1</h3>
+  <details id="LargeClass" open="open">
+    <summary class="rule-container"><span class="rule">LargeClass: 1 </span><span class="description">One class should have one responsibility. Large classes tend to handle many things at once. Split up large classes into smaller classes that are easier to understand.</span></summary>
+<a href="https://detekt.dev/docs/rules/complexity#largeclass">Documentation</a>
+    <ul>
+      <li><span class="location">C:/Users/janid/Documents/MyProjects/flight-booking-system/server/src/test/kotlin/com/flight/server/ApplicationTest.kt:25:7</span><span class="message">Class ApplicationTest is too large. Consider splitting it into smaller pieces.</span>
+        <pre><code><span class="lineno">  22 </span>import kotlin.test.assertEquals
+<span class="lineno">  23 </span>
+<span class="lineno">  24 </span>@Suppress(&quot;unused&quot;)
+<span class="lineno">  25 </span>class <span class="error">ApplicationTest</span> :
+<span class="lineno">  26 </span>    StringSpec({
+<span class="lineno">  27 </span>        &quot;Login and registration pages loads properly&quot; {
+<span class="lineno">  28 </span>            testApplication {
+</code></pre>
+      </li>
+    </ul>
+  </details>
+</div>
 
 
-generated with <a href="https://detekt.dev/">detekt version 1.23.8</a> on 2026-05-04 21:40:29 UTC.
+generated with <a href="https://detekt.dev/">detekt version 1.23.8</a> on 2026-05-07 03:01:58 UTC.
 
 </body>
 </html>

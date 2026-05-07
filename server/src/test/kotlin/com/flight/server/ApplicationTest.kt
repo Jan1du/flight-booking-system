@@ -685,6 +685,40 @@ class ApplicationTest :
                 response.bodyAsText() shouldNotContain "SkyJet"
             }
         }
+
+        "Updates the price when selecting different cabin classes " {
+            testApplication {
+                application { testModule() }
+                // Business class (x1.5)
+                val response1 =
+                    client.get("/search") {
+                        url {
+                            parameters.append("trip_type", "one-way")
+                            parameters.append("origin", "Heathrow")
+                            parameters.append("destination", "Barajas")
+                            parameters.append("depart_date", "2026-05-15")
+                            parameters.append("cabin_class", "business")
+                        }
+                    }
+
+                // First class (x2.0)
+                val response2 =
+                    client.get("/search") {
+                        url {
+                            parameters.append("trip_type", "one-way")
+                            parameters.append("origin", "Heathrow")
+                            parameters.append("destination", "Barajas")
+                            parameters.append("depart_date", "2026-05-15")
+                            parameters.append("cabin_class", "first")
+                        }
+                    }
+
+                checkForHtml(response1)
+                checkForHtml(response2)
+                response1.bodyAsText() shouldContain "GBP 480.00" // 320 x 1.5
+                response2.bodyAsText() shouldContain "GBP 640.00" // 320 x 2.0
+            }
+        }
     })
 
 fun checkForHtml(response: HttpResponse) {
