@@ -9,13 +9,122 @@
 {# @pebvariable name="price_multi" type="Double" #}
 {% extends "base.peb" %}
 
+{% block styles %}
+<style>
+    .results-title {
+        margin-bottom: 0.5rem;
+        color: #b71c1c;
+    }
+
+    .results-summary {
+        margin-bottom: 1.5rem;
+        color: #4b5563;
+    }
+
+    .flight-card {
+        display: grid;
+        grid-template-columns: 1.4fr 1fr 0.7fr;
+        gap: 1rem;
+        align-items: center;
+        background-color: rgba(255, 255, 255, 0.96);
+        border: 1px solid #f0caca;
+        border-left: 5px solid #d62828;
+        border-radius: 14px;
+        padding: 1.25rem;
+        margin-bottom: 1rem;
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+    }
+
+    .airline-name {
+        margin-bottom: 0.35rem;
+        color: #12355b;
+    }
+
+    .route-text {
+        margin: 0;
+        color: #4b5563;
+        font-size: 0.95rem;
+    }
+
+    .flight-details {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.7rem;
+        border-left: 1px solid #f3d6d6;
+        border-right: 1px solid #f3d6d6;
+        padding: 0 1rem;
+    }
+
+    .detail-label {
+        margin: 0;
+        font-size: 0.8rem;
+        font-weight: 700;
+        color: #b71c1c;
+    }
+
+    .detail-value {
+        margin: 0;
+        color: #1f2937;
+        font-size: 0.9rem;
+    }
+
+    .price-box {
+        text-align: right;
+    }
+
+    .price-label {
+        margin-bottom: 0.2rem;
+        font-size: 0.85rem;
+        color: #6b7280;
+    }
+
+    .price {
+        margin-bottom: 0.4rem;
+        font-size: 1.6rem;
+        font-weight: 800;
+        color: #d62828;
+    }
+
+    .discount-text {
+        margin: 0;
+        font-size: 0.85rem;
+        color: #4b5563;
+    }
+
+    .no-results {
+        background-color: rgba(255, 255, 255, 0.96);
+        border: 1px solid #f0caca;
+        border-radius: 14px;
+        padding: 1.5rem;
+    }
+
+    @media (max-width: 850px) {
+        .flight-card {
+            grid-template-columns: 1fr;
+        }
+
+        .flight-details {
+            border-left: none;
+            border-right: none;
+            border-top: 1px solid #f3d6d6;
+            border-bottom: 1px solid #f3d6d6;
+            padding: 1rem 0;
+        }
+
+        .price-box {
+            text-align: left;
+        }
+    }
+</style>
+{% endblock %}
+
 {% block content %}
 
 <div id="flight-container">
-    <h1>Flight Results</h1>
+    <h1 class="results-title">Flight Results</h1>
 
     {% if origin or destination %}
-        <p>
+        <p class="results-summary">
             Showing results
             {% if origin %}from <strong>{{ origin }}</strong>{% endif %}
             {% if destination %} to <strong>{{ destination }}</strong>{% endif %}
@@ -25,50 +134,55 @@
 
     {% if count > 0 %}
         {% for flight in flights %}
-            <article style="border: 1px solid #ddd; border-radius: 12px; padding: 1.25rem; margin-bottom: 1rem;">
-                <div style="display: flex; justify-content: space-between; align-items: start; gap: 1rem;">
+            <article class="flight-card">
+                <div>
+                    <h3 class="airline-name">{{ flight.airline.name }}</h3>
+                    <p class="route-text">
+                        {{ flight.departureAirport.name }} → {{ flight.arrivalAirport.name }}
+                    </p>
+                </div>
+
+                <div class="flight-details">
                     <div>
-                        <h3 style="margin-bottom: 0.5rem;">
-                            {{ flight.airline.name }}
-                        </h3>
-                        <p style="margin-bottom: 0.35rem;"><strong>Route:</strong>
-                            {{ flight.departureAirport.name }} to {{ flight.arrivalAirport.name }}
-                        </p>
-                        <p style="margin-bottom: 0.35rem;"><strong>Depart:</strong>
-                            {{ flight.date }} at {{ flight.departureTime }}
-                        </p>
-                        <p style="margin-bottom: 0.35rem;"><strong>Arrival:</strong> {{ flight.arrivalTime }}</p>
-                        <p style="margin-bottom: 0.35rem;"><strong>Cabin:</strong> {{ cabin_class }} </p>
+                        <p class="detail-label">Depart</p>
+                        <p class="detail-value">{{ flight.date }} at {{ flight.departureTime }}</p>
                     </div>
 
-                    <div style="min-width: 180px; text-align: right;">
-                        <p style="margin-bottom: 0.35rem; font-size: 0.9rem; color: #666;">
-                            Total price
-                        </p>
-                        <p style="margin-bottom: 0.5rem; font-size: 1.8rem; font-weight: 700; color: #0a5bd8;">
-                            GBP {{ (flight.defaultPrice * price_multi) | numberformat("0.00") }}
-                        </p>
-                        <p style="margin: 0; font-size: 0.95rem;">
-                            <strong>Discounts:</strong> None currently available
-                        </p>
-
-                        {% if trip_type == 'return' %}
-                            <button hx-get="/search-return?origin={{ destination }}&destination={{ origin }}&depart_date={{ return_date }}&cabin_class={{ cabin_class }}"
-                                    hx-target="#flight-container"
-                                    hx-swap="outerHTML">
-                                Select
-                            </button>
-                        {% else %}
-                            <a href="/passenger-info">
-                                <button type="button">Select</button>
-                            </a>
-                        {% endif %}
+                    <div>
+                        <p class="detail-label">Arrival</p>
+                        <p class="detail-value">{{ flight.arrivalTime }}</p>
                     </div>
+
+                    <div>
+                        <p class="detail-label">Cabin</p>
+                        <p class="detail-value">{{ cabin_class }}</p>
+                    </div>
+
+                    <div>
+                        <p class="detail-label">Discounts</p>
+                        <p class="detail-value">None</p>
+                    </div>
+                </div>
+
+                <div class="price-box">
+                    <p class="price-label">Total price</p>
+                    <p class="price">GBP {{ (flight.defaultPrice * price_multi) | numberformat("0.00") }}</p>
+                    {% if trip_type == 'return' %}
+                    <button hx-get="/search-return?origin={{ destination }}&destination={{ origin }}&depart_date={{ return_date }}&cabin_class={{ cabin_class }}"
+                            hx-target="#flight-container"
+                            hx-swap="outerHTML">
+                        Select
+                    </button>
+                    {% else %}
+                    <a href="/passenger-info">
+                        <button type="button">Select</button>
+                    </a>
+                    {% endif %}
                 </div>
             </article>
         {% endfor %}
     {% else %}
-        <p>No matching flights found.</p>
+        <p class="no-results">No matching flights found.</p>
     {% endif %}
+    {% endblock %}
 </div>
-{% endblock %}
