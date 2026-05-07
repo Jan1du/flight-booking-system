@@ -1,3 +1,4 @@
+{# @pebvariable name="airports" type="List<Airport>" #}
 {% extends "base.peb" %}
 
 {% block styles %}
@@ -35,6 +36,12 @@
 
 {% block content %}
 <form action="/search" method="GET">
+    <datalist id="airport-list">
+        {% for airport in airports %}
+            <option value="{{ airport.name }}">{{ airport.city }}, {{ airport.country }}</option>
+        {% endfor %}
+    </datalist>
+
     <div class="grid">
         <label>
             <input type="radio" name="trip_type" id="trip-one-way" value="one-way" checked>
@@ -49,11 +56,11 @@
     <div class="grid">
         <label>
             From:
-            <input type="text" name="origin" placeholder="City or Airport" required>
+            <input type="text" name="origin" placeholder="Search City or Airport" list="airport-list" autocomplete="off" required>
         </label>
         <label>
             To:
-            <input type="text" name="destination" placeholder="City or Airport" required>
+            <input type="text" name="destination" placeholder="Search City or Airport" list="airport-list" autocomplete="off" required>
         </label>
     </div>
 
@@ -85,13 +92,13 @@
                     <li>
                         <div class="passenger-row">
                             <span>Adults (18+)</span>
-                            <input type="number" name="adults" id="num-adults" value="1" min="1" max="9">
+                            <input type="number" name="adults" id="num-adults" value="1" min="1" max="50">
                         </div>
                     </li>
                     <li>
                         <div class="passenger-row">
                             <span>Children (0-17)</span>
-                            <input type="number" name="children" id="num-children" value="0" min="0" max="9">
+                            <input type="number" name="children" id="num-children" value="0" min="0" max="50">
                         </div>
                     </li>
                 </ul>
@@ -148,11 +155,84 @@
             }
         }
 
-        adults.addEventListener("input", updatePassengerSummary);
-        children.addEventListener("input", updatePassengerSummary);
+        {# Enforcing min max limits for passenger count #}
+        function enforceMinMax(event) {
+            const input = event.target;
+            const min = parseInt(input.min, 10);
+            const max = parseInt(input.max, 10);
+            let value = parseInt(input.value, 10);
+
+            if (isNaN(value) || value < min) {
+                input.value = min;
+            }
+            else if (value > max) {
+                input.value = max;
+            }
+
+            updatePassengerSummary();
+        }
+
+        {# Blocking invalid inputs #}
+        function blockInvalidKeys(event) {
+            if (['-', '+', 'e', 'E', '.'].includes(event.key)) {
+                event.preventDefault();
+            }
+        }
+
+        adults.addEventListener('input', updatePassengerSummary);
+        children.addEventListener('input', updatePassengerSummary);
+
+        adults.addEventListener('change', enforceMinMax);
+        children.addEventListener('change', enforceMinMax);
+
+        adults.addEventListener('keydown', blockInvalidKeys);
+        children.addEventListener('keydown', blockInvalidKeys);
 
         {# Run once to make sure the text is correct on page load #}
         updatePassengerSummary();
     });
+
+    {# Making sure that the user enters/selects a valid airport name to sent to the backend #}
+    document.addEventListener("DOMContentLoaded", function() {
+        const originInput = document.querySelector('input[name="origin"]');
+        const destinationInput = document.querySelector('input[name="destination"]');
+        const datalist = document.getElementById('airport-list');
+
+        const validAirports = Array.from(datalist.options).map(option => option.value);
+
+        function requireDatalistMatch(inputElement) {
+            inputElement.addEventListener('input', function() {
+                if (validAirports.includes(inputElement.value) || inputElement.value === "") {
+                    inputElement.setCustomValidity('');
+                } else {
+                    inputElement.setCustomValidity('Please select a valid airport from the list.');
+                }
+            });
+        }
+
+        requireDatalistMatch(originInput);
+        requireDatalistMatch(destinationInput);
+    });
+
+    {# Prevents the user from entering a date from the past #}
+    document.addEventListener("DOMContentLoaded", function() {
+        const departDateInput = document.querySelector('input[name="depart_date"]');
+        const returnDateInput = document.getElementById('return-date');
+
+        const today = new Date().toLocaleDateString('en-CA'); // 'en-CA' forces the format to YYYY-MM-DD
+
+        departDateInput.min = today;
+        returnDateInput.min = today;
+
+        {# Prevents the user from entering a return date before the departure date #}
+        departDateInput.addEventListener('change', function() {
+            returnDateInput.min = this.value;
+
+            if (returnDateInput.value && returnDateInput.value < this.value) {
+                returnDateInput.value = this.value;
+            }
+        });
+    });
+
 </script>
 {% endblock %}

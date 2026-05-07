@@ -5,6 +5,7 @@ import com.flight.server.repos.findUser
 import io.ktor.server.application.Application
 import io.ktor.server.application.ApplicationCall
 import io.ktor.server.auth.authenticate
+import io.ktor.server.http.content.staticResources
 import io.ktor.server.pebble.respondTemplate
 import io.ktor.server.response.respondRedirect
 import io.ktor.server.routing.get
@@ -16,8 +17,10 @@ import org.jetbrains.exposed.v1.jdbc.transactions.suspendTransaction
 
 fun Application.configureRouting() {
     routing {
+        staticResources("/static", "")
         get("/") { call.displaySearchForm() }
         get("/search") { call.displayResults() }
+        get("/search-return") { call.displayReturn() }
         authenticate("auth-session") {
             get("/manage") { call.displayManage() }
             get("/user-info") { call.userInfoPage() }
