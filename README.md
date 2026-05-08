@@ -11,7 +11,20 @@ generates random flight data using the airport and airline data.
     enter `./gradlew :create:run` on the terminal in the root directory
 
 - To run the application:\
-    enter `./gradlew :server:run` on the terminal in the root directory
+    enter `./gradlew :server:run` 
 
 - To run the unit tests:\
     enter `./gradlew check`
+
+## Using the Application:
+
+- Flight data is randomly generated for the next 2 months (60 days)
+with 10 chosen airports and airlines. So the airport names need to 
+be selected from the drop-down, and the dates above 60 days may not have
+any flights.
+
+- Users can search outbound and return flights, but cannot proceed to 
+booking without registering or logging in.
+
+- Users can look at the flight results in the "Manage" tab once a successful
+booking is made
