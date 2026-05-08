@@ -1,3 +1,4 @@
+{# @pebvariable name="airports" type="List<Airport>" #}
 {% extends "base.peb" %}
 
 {% block styles %}
@@ -213,13 +214,13 @@
                     <li>
                         <div class="passenger-row">
                             <span>Adults (18+)</span>
-                            <input type="number" name="adults" id="num-adults" value="1" min="1" max="50">
+                            <input type="number" name="adults" id="num-adults" value="1" min="1" max="10">
                         </div>
                     </li>
                     <li>
                         <div class="passenger-row">
                             <span>Children (0-17)</span>
-                            <input type="number" name="children" id="num-children" value="0" min="0" max="50">
+                            <input type="number" name="children" id="num-children" value="0" min="0" max="10">
                         </div>
                     </li>
                 </ul>

@@ -168,13 +168,13 @@
                     <p class="price-label">Total price</p>
                     <p class="price">GBP {{ (flight.defaultPrice * price_multi) | numberformat("0.00") }}</p>
                     {% if trip_type == 'return' %}
-                    <button hx-get="/search-return?origin={{ destination }}&destination={{ origin }}&depart_date={{ return_date }}&cabin_class={{ cabin_class }}"
+                    <button hx-get="/search-return?outbound-{{ flight.id }}&origin={{ destination }}&destination={{ origin }}&depart_date={{ return_date }}&cabin_class={{ cabin_class }}"
                             hx-target="#flight-container"
                             hx-swap="outerHTML">
                         Select
                     </button>
                     {% else %}
-                    <a href="/passenger-info">
+                    <a href="/passenger-info?outbound={{ flight.id }}">
                         <button type="button">Select</button>
                     </a>
                     {% endif %}

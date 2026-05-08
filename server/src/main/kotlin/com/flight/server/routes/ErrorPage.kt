@@ -9,7 +9,12 @@ import io.ktor.server.plugins.statuspages.StatusPages
 fun Application.configureErrorHandling() {
     install(StatusPages) {
         status(HttpStatusCode.NotFound) { call, _ ->
-            call.respondTemplate("not-found.peb", mapOf())
+            call.respondTemplate(
+                "not-found.peb",
+                mapOf(
+                    "logged_in" to call.isLoggedIn(),
+                ),
+            )
         }
     }
 }

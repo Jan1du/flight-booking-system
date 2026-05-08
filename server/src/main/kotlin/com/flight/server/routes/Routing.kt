@@ -22,12 +22,13 @@ fun Application.configureRouting() {
         get("/search") { call.displayResults() }
         get("/search-return") { call.displayReturn() }
         authenticate("auth-session") {
+            get("/passenger-info") { call.passengerDetailForm() }
+            post("/passenger-info") { call.passengerDetails() }
             get("/manage") { call.displayManage() }
             get("/user-info") { call.userInfoPage() }
             post("/user-info") { call.addUserInfo() }
             get("/logout") { call.logout() }
         }
-        get("/about") { call.displayAbout() }
         get("/register") { call.registerPage() }
         post("/register") { call.registerUser() }
         get("/login") { call.loginPage() }
@@ -58,15 +59,4 @@ private suspend fun ApplicationCall.displayManage() {
             )
         }
     }
-}
-
-private suspend fun ApplicationCall.displayAbout() {
-    respondTemplate(
-        "about-us.peb",
-        model =
-            mapOf(
-                "active_nav" to "about",
-                "logged_in" to isLoggedIn(),
-            ),
-    )
 }

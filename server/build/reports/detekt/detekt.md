@@ -2,35 +2,35 @@
 
 ## Metrics
 
-* 100 number of properties
+* 113 number of properties
 
-* 34 number of functions
+* 35 number of functions
 
-* 2 number of classes
+* 3 number of classes
 
 * 5 number of packages
 
-* 13 number of kt files
+* 14 number of kt files
 
 ## Complexity Report
 
-* 1,369 lines of code (loc)
+* 1,461 lines of code (loc)
 
-* 1,198 source lines of code (sloc)
+* 1,278 source lines of code (sloc)
 
-* 835 logical lines of code (lloc)
+* 892 logical lines of code (lloc)
 
-* 36 comment lines of code (cloc)
+* 37 comment lines of code (cloc)
 
-* 77 cyclomatic complexity (mcc)
+* 85 cyclomatic complexity (mcc)
 
-* 39 cognitive complexity
+* 42 cognitive complexity
 
 * 1 number of total code smells
 
-* 3% comment source ratio
+* 2% comment source ratio
 
-* 92 mcc per 1,000 lloc
+* 95 mcc per 1,000 lloc
 
 * 1 code smells per 1,000 lloc
 
@@ -58,4 +58,4 @@ Class ApplicationTest is too large. Consider splitting it into smaller pieces.
 
 ```
 
-generated with [detekt version 1.23.8](https://detekt.dev/) on 2026-05-07 03:01:58 UTC
+generated with [detekt version 1.23.8](https://detekt.dev/) on 2026-05-08 02:24:37 UTC

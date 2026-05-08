@@ -2,39 +2,155 @@
 {% extends "base.peb" %}
 
 {% block styles %}
-{# Used gemini to get help with the precise css (lines 6-32) #}
+{# Used Gemini to help with small CSS layout improvements #}
 <style>
+    .booking-hero {
+        text-align: center;
+        margin-bottom: 2rem;
+        padding: 2rem;
+        border-radius: 20px;
+        background: linear-gradient(135deg, #d62828, #ff6b6b);
+        color: white;
+        box-shadow: 0 8px 25px rgba(214, 40, 40, 0.25);
+    }
+
+    .booking-hero h2 {
+        color: white;
+        margin-bottom: 0.4rem;
+    }
+
+    .booking-hero p {
+        color: #ffe5e5;
+    }
+
+    .search-title {
+        margin-bottom: 1.5rem;
+        border-bottom: 1px solid #f1d4d4;
+        padding-bottom: 1rem;
+    }
+
+    .search-title p {
+        color: #6b7280;
+        margin-bottom: 1rem;
+    }
+
+    form {
+        border-top: 5px solid #d62828;
+        background-color: rgba(255, 255, 255, 0.96);
+    }
+
+    .grid {
+        margin-bottom: 1rem;
+    }
+
+    .trip-option {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-weight: 600;
+        background-color: white;
+        border: 1px solid #f0caca;
+        border-radius: 12px;
+        padding: 0.7rem 1rem;
+    }
+
+    .trip-option:hover {
+        border-color: #d62828;
+    }
+    input,
+    select,
+    summary {
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+    }
+
+    .passenger-dropdown summary {
+        width: 100%;
+        padding: 0.8rem 1rem;
+        border: 1px solid #f0caca;
+        border-radius: 10px;
+        background-color: white;
+        color: #1d3557;
+        font-weight: 500;
+    }
+
+    .passenger-dropdown summary:hover {
+        border-color: #d62828;
+        background-color: #fff7f7;
+    }
+
     .passenger-dropdown ul {
-        width: 280px;
-        padding: 0.5rem;
+        width: 300px;
+        padding: 1rem;
+        border: 1px solid #f0caca;
+        border-radius: 14px;
+        background-color: white;
+        box-shadow: 0 8px 22px rgba(0, 0, 0, 0.12);
+    }
+
+    .passenger-dropdown li {
+        list-style: none;
+    }
+
+    .passenger-dropdown[open] summary {
+        border-color: #d62828;
+        box-shadow: 0 0 0 3px rgba(214, 40, 40, 0.15);
     }
 
     .passenger-row {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 0.5rem;
+        gap: 1rem;
+        padding: 0.7rem 0.4rem;
+        border-bottom: 1px solid #f3e1e1;
+    }
+
+    .passenger-row:last-child {
+        border-bottom: none;
     }
 
     .passenger-row span {
-        font-weight: bold;
-        color: var(--pico-color);
+        font-weight: 600;
+        color: #1d3557;
+        font-size: 0.95rem;
     }
 
     .passenger-row input[type="number"] {
-        width: 80px;
+        width: 75px;
         margin-bottom: 0;
-        padding: 0.25rem 0.5rem;
+        padding: 0.45rem;
         text-align: center;
+        border-radius: 10px;
+        border: 1px solid #f0caca;
+        background-color: #fff7f7 !important;
+        color: #7f1d1d !important;
+        font-weight: 600;
     }
 
-    .passenger-dropdown li {
-        list-style: none;
+    .search-button {
+        width: 100%;
+        font-weight: 600;
+        padding: 1rem;
+        font-size: 1rem;
+        background-color: #d62828 !important;
+        border-color: #d62828 !important;
+        color: white !important;
     }
+
+    .search-button:hover {
+        background-color: #b71c1c !important;
+        border-color: #b71c1c !important;
+    }
+
 </style>
 {% endblock %}
 
 {% block content %}
+<div class="booking-hero">
+    <h2>Book your flight</h2>
+    <p>Find and compare flights easily.</p>
+</div>
+
 <form action="/search" method="GET">
     <datalist id="airport-list">
         {% for airport in airports %}
@@ -42,12 +158,17 @@
         {% endfor %}
     </datalist>
 
+    <div class="search-title">
+        <h2>Search Flights</h2>
+        <p>Enter your journey details below to find available flights.</p>
+    </div>
+
     <div class="grid">
-        <label>
+        <label class="trip-option">
             <input type="radio" name="trip_type" id="trip-one-way" value="one-way" checked>
             One-way
         </label>
-        <label>
+        <label class="trip-option">
             <input type="radio" name="trip_type" id="trip-return" value="return">
             Return
         </label>
@@ -74,6 +195,7 @@
             <input type="date" name="return_date" id="return-date" disabled>
         </label>
     </div>
+
     <div class="grid">
         <label>
             Cabin class
@@ -92,13 +214,13 @@
                     <li>
                         <div class="passenger-row">
                             <span>Adults (18+)</span>
-                            <input type="number" name="adults" id="num-adults" value="1" min="1" max="50">
+                            <input type="number" name="adults" id="num-adults" value="1" min="1" max="10">
                         </div>
                     </li>
                     <li>
                         <div class="passenger-row">
                             <span>Children (0-17)</span>
-                            <input type="number" name="children" id="num-children" value="0" min="0" max="50">
+                            <input type="number" name="children" id="num-children" value="0" min="0" max="10">
                         </div>
                     </li>
                 </ul>
@@ -106,8 +228,8 @@
         </label>
     </div>
 
-    <div style="text-align: center; margin-top: 2rem;">
-        <button type="submit">Search</button>
+    <div style="margin-top: 2rem;">
+        <button type="submit" class="search-button">Search flights</button>
     </div>
 
 </form>
@@ -115,7 +237,7 @@
 
 {% block scripts %}
 
-{# Used gemini to understand javascript functionality used to change element properties #}
+{# Used gemini to understand JavaScript functionality used to change element properties #}
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         {# Toggling the return date input #}
@@ -139,7 +261,7 @@
         returnRadio.addEventListener("change", toggleReturnDate);
 
         {# Updating passenger count #}
-        const passengerSummary = document.getElementById("passenger-summary")
+        const passengerSummary = document.getElementById("passenger-summary");
         const adults = document.getElementById("num-adults");
         const children = document.getElementById("num-children");
 
@@ -189,6 +311,7 @@
         children.addEventListener('keydown', blockInvalidKeys);
 
         {# Run once to make sure the text is correct on page load #}
+        toggleReturnDate();
         updatePassengerSummary();
     });
 

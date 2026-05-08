@@ -660,7 +660,7 @@ class ApplicationTest :
 
                 checkForHtml(response)
                 response.bodyAsText() shouldContain "SkyJet"
-                response.bodyAsText() shouldContain "Heathrow to Charles de Gaulle"
+                response.bodyAsText() shouldContain "Heathrow → Charles de Gaulle"
                 response.bodyAsText() shouldContain "2026-05-03 at 08:30"
                 response.bodyAsText() shouldContain "GBP 120.00"
             }

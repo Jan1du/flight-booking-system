@@ -6,7 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Book your flight{% endblock %}</title>
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.red.min.css"
+    >
 
     {# Tweaking the css #}
     <style>
@@ -117,6 +120,11 @@
             width: 18px;
             height: 18px;
             color: #12355b;
+        }
+
+        input[type="date"] {
+            appearance: auto !important;
+            -webkit-appearance: auto !important;
         }
 
         h1,
