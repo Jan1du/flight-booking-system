@@ -4,6 +4,7 @@
 - Implemented using the ktor framework and the Gradle build system
 - The system is for demo purposes only as it has limited data on airports and airlines and 
 generates random flight data using the airport and airline data.
+- The **Wiki** with all the documentation is located in the 'docs' folder.
 
 ## Running the Application:
 
