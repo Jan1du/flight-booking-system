@@ -52,20 +52,21 @@
         }
 
         header nav a {
-            color: #1d3557;
-            font-weight: 500;
+            color: #7f1d1d;
+            font-weight: 600;
             text-decoration: none;
+            transition: color 0.2s ease;
         }
 
         header nav a:hover {
-            color: #0077b6;
+            color: #d62828;
         }
 
         .active-link {
-            color: #0077b6;
+            color: #d62828 !important;
             font-weight: 700;
-            text-decoration: none;
         }
+
 
         main.container {
             max-width: 1150px;
