@@ -1,12 +1,10 @@
 package com.flight.server.routes
 
-import com.flight.db.Airline
-import com.flight.db.Airport
 import com.flight.server.auth.UserSession
 import com.flight.server.repos.findBookingById
 import com.flight.server.repos.findCompletedBookingsByUser
-import com.flight.server.repos.findUpcomingBookingsByUser
 import com.flight.server.repos.findFlights
+import com.flight.server.repos.findUpcomingBookingsByUser
 import com.flight.server.repos.findUser
 import io.ktor.server.application.Application
 import io.ktor.server.application.ApplicationCall

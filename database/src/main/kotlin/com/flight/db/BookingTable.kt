@@ -4,7 +4,7 @@ import org.jetbrains.exposed.v1.core.ReferenceOption
 import org.jetbrains.exposed.v1.core.dao.id.IntIdTable
 
 const val MAX_BOOKING_DATE_LENGTH = 10 // yyyy-mm-dd
-const val MAX_BOOKING_STATUS_LENGTH = 9 // completed, confirmed, pending 
+const val MAX_BOOKING_STATUS_LENGTH = 9 // completed, confirmed, pending
 
 object BookingTable : IntIdTable("booking") {
     // Foreign keys

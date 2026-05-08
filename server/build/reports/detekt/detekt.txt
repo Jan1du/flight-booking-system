@@ -1,0 +1,1 @@
+LargeClass - 769/600 - [ApplicationTest] at C:\Users\janid\Documents\MyProjects\flight-booking-system\server\src\test\kotlin\com\flight\server\ApplicationTest.kt:25:7 - Signature=ApplicationTest.kt$ApplicationTest : StringSpec

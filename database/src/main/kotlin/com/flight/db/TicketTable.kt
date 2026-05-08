@@ -3,8 +3,8 @@ package com.flight.db
 import org.jetbrains.exposed.v1.core.ReferenceOption
 import org.jetbrains.exposed.v1.core.dao.id.IntIdTable
 
-const val MAX_SEAT_NUMBER_LENGTH = 5   // e.g. "32A"
-const val MAX_CABIN_CLASS_LENGTH = 20  // e.g. "Business Class"
+const val MAX_SEAT_NUMBER_LENGTH = 5 // e.g. "32A"
+const val MAX_CABIN_CLASS_LENGTH = 20 // e.g. "Business"
 
 object TicketTable : IntIdTable("tickets") {
     // Foreign keys

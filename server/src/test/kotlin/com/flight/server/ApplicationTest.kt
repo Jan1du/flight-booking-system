@@ -665,7 +665,7 @@ class ApplicationTest :
 
                 checkForHtml(response)
                 response.bodyAsText() shouldContain "SkyJet"
-                response.bodyAsText() shouldContain "Heathrow to Charles de Gaulle"
+                response.bodyAsText() shouldContain "Heathrow → Charles de Gaulle"
                 response.bodyAsText() shouldContain "2026-05-03 at 08:30"
                 response.bodyAsText() shouldContain "GBP 120.00"
             }
@@ -701,14 +701,15 @@ class ApplicationTest :
                 val client = createClient { install(HttpCookies) }
                 client.post("/login") {
                     header(
-                        HttpHeaders.ContentType, 
-                        ContentType.Application.FormUrlEncoded.toString()
-                        )
+                        HttpHeaders.ContentType,
+                        ContentType.Application.FormUrlEncoded.toString(),
+                    )
                     setBody(
                         listOf(
-                            "email" to "alice@gmail.com", 
-                            "password" to "AliceTest_01"
-                            ).formUrlEncode())
+                            "email" to "alice@gmail.com",
+                            "password" to "AliceTest_01",
+                        ).formUrlEncode(),
+                    )
                 }
                 val response = client.get("/manage").also { checkForHtml(it) }
                 response.bodyAsText() shouldContain "No upcoming bookings."
@@ -753,7 +754,10 @@ class ApplicationTest :
                     )
                 }
                 val text = client.get("/manage").also { checkForHtml(it) }.bodyAsText()
-                val upcomingSection = text.substringAfter("id=\"section-upcoming\"").substringBefore("id=\"section-completed\"")
+                val upcomingSection =
+                    text
+                        .substringAfter("id=\"section-upcoming\"")
+                        .substringBefore("id=\"section-completed\"")
                 upcomingSection shouldContain "2026-09-10"
                 upcomingSection shouldContain "2026-10-20"
             }
@@ -776,7 +780,10 @@ class ApplicationTest :
                     )
                 }
                 val text = client.get("/manage").also { checkForHtml(it) }.bodyAsText()
-                val upcomingSection = text.substringAfter("id=\"section-upcoming\"").substringBefore("id=\"section-completed\"")
+                val upcomingSection =
+                    text
+                        .substringAfter("id=\"section-upcoming\"")
+                        .substringBefore("id=\"section-completed\"")
                 (upcomingSection.indexOf("2026-09-10") < upcomingSection.indexOf("2026-10-20")) shouldBe true
             }
         }
@@ -843,8 +850,14 @@ class ApplicationTest :
                     )
                 }
                 val manageText = client.get("/manage").also { checkForHtml(it) }.bodyAsText()
-                val upcomingSection = manageText.substringAfter("id=\"section-upcoming\"").substringBefore("id=\"section-completed\"")
-                val bookingId = upcomingSection.substringAfter("href=\"/manage/").substringBefore("\"")
+                val upcomingSection =
+                    manageText
+                        .substringAfter("id=\"section-upcoming\"")
+                        .substringBefore("id=\"section-completed\"")
+                val bookingId =
+                    upcomingSection
+                        .substringAfter("href=\"/manage/")
+                        .substringBefore("\"")
                 val response = client.get("/manage/$bookingId").also { checkForHtml(it) }
                 response.bodyAsText() shouldContain "Booking #$bookingId"
                 response.bodyAsText() shouldContain "What would you like to do?"
