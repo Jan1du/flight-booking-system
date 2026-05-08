@@ -826,6 +826,31 @@ class ApplicationTest :
                 (completedSection.indexOf("2026-05-03") < completedSection.indexOf("2026-03-24")) shouldBe true
             }
         }
+
+        "Manage this booking button links to the booking actions page" {
+            testApplication {
+                application { testModule() }
+                val client = createClient { install(HttpCookies) }
+                client.post("/login") {
+                    header(
+                        HttpHeaders.ContentType,
+                        ContentType.Application.FormUrlEncoded.toString(),
+                    )
+                    setBody(
+                        listOf(
+                            "email" to "johndoe@gmail.com",
+                            "password" to "Password123",
+                        ).formUrlEncode(),
+                    )
+                }
+                val manageText = client.get("/manage").also { checkForHtml(it) }.bodyAsText()
+                val upcomingSection = manageText.substringAfter("id=\"section-upcoming\"").substringBefore("id=\"section-completed\"")
+                val bookingId = upcomingSection.substringAfter("href=\"/manage/").substringBefore("\"")
+                val response = client.get("/manage/$bookingId").also { checkForHtml(it) }
+                response.bodyAsText() shouldContain "Booking #$bookingId"
+                response.bodyAsText() shouldContain "What would you like to do?"
+            }
+        }
     })
 
 fun checkForHtml(response: HttpResponse) {
