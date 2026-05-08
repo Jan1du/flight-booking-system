@@ -104,7 +104,7 @@ suspend fun ApplicationCall.displayReturn() {
     suspendTransaction {
         val formParams = request.queryParameters
 
-        val outboundFlightId = formParams.getOrFail("outbound_flight_id").toInt()
+        val outboundFlightId = formParams.getOrFail("outbound").toInt()
         val origin = formParams.getOrFail("origin")
         val destination = formParams.getOrFail("destination")
         val departDate = formParams.getOrFail("depart_date")

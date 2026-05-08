@@ -14,8 +14,8 @@ import kotlin.random.Random
 const val USER_DATA = "csv/users.csv"
 const val AIRPORT_DATA = "csv/airports.csv"
 const val AIRLINE_DATA = "csv/airlines.csv"
-const val NUM_DAYS = 30 // Number of days from now for flights to be generated
-const val NUM_FLIGHTS = 500 // Number of flights per day that needs to be generated
+const val NUM_DAYS = 60 // Number of days from now for flights to be generated
+const val NUM_FLIGHTS = 1000 // Number of flights per day that needs to be generated
 const val MAX_HOURS: Long = 23
 const val MAX_MINUTES: Long = 59
 
