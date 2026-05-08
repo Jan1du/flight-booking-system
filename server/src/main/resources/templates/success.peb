@@ -1,0 +1,4 @@
+{% extends "base.peb" %}
+{% block content %}
+<h2>Booking Successful</h2>
+{% endblock %}

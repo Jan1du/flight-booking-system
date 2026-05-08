@@ -1,4 +1,4 @@
-// Used copilot to when trying t configure the working directory (lines 16-18)
+// Used copilot to when trying to configure the working directory (lines 16-18)
 
 plugins {
     alias(libs.plugins.kotlin.jvm)
@@ -22,5 +22,6 @@ dependencies {
     implementation(libs.commons.csv)
     implementation(libs.exposed.core)
     implementation(libs.exposed.jdbc)
+    implementation(libs.exposed.dao)
     implementation(libs.h2)
 }

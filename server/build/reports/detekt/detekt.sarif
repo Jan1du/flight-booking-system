@@ -4,6 +4,116 @@
   "runs": [
     {
       "results": [
+        {
+          "level": "warning",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Users/janid/Documents/MyProjects/flight-booking-system/server/src/main/kotlin/com/flight/server/routes/BookingRoutes.kt"
+                },
+                "region": {
+                  "endColumn": 2,
+                  "endLine": 33,
+                  "startColumn": 22,
+                  "startLine": 25
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "The function addTicket(currentBooking: Booking, currentFlight: Flight, firstName: String, lastName: String, cabin: String, seatnumber: String, price: BigDecimal) has too many parameters. The current threshold is set to 6."
+          },
+          "ruleId": "detekt.complexity.LongParameterList"
+        },
+        {
+          "level": "warning",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Users/janid/Documents/MyProjects/flight-booking-system/server/src/main/kotlin/com/flight/server/routes/BookingRoutes.kt"
+                },
+                "region": {
+                  "endColumn": 39,
+                  "endLine": 186,
+                  "startColumn": 29,
+                  "startLine": 186
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "The function addBooking is too long (96). The maximum length is 60."
+          },
+          "ruleId": "detekt.complexity.LongMethod"
+        },
+        {
+          "level": "warning",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Users/janid/Documents/MyProjects/flight-booking-system/server/src/main/kotlin/com/flight/server/routes/BookingRoutes.kt"
+                },
+                "region": {
+                  "endColumn": 39,
+                  "endLine": 186,
+                  "startColumn": 29,
+                  "startLine": 186
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "The function addBooking appears to be too complex based on Cyclomatic Complexity (complexity: 17). Defined complexity threshold for methods is set to '15'"
+          },
+          "ruleId": "detekt.complexity.CyclomaticComplexMethod"
+        },
+        {
+          "level": "warning",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Users/janid/Documents/MyProjects/flight-booking-system/server/src/main/kotlin/com/flight/server/routes/BookingRoutes.kt"
+                },
+                "region": {
+                  "endColumn": 46,
+                  "endLine": 199,
+                  "startColumn": 13,
+                  "startLine": 194
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "This condition is too complex (6). Defined complexity threshold for conditions is set to '4'"
+          },
+          "ruleId": "detekt.complexity.ComplexCondition"
+        },
+        {
+          "level": "warning",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Users/janid/Documents/MyProjects/flight-booking-system/server/src/test/kotlin/com/flight/server/ApplicationTest.kt"
+                },
+                "region": {
+                  "endColumn": 22,
+                  "endLine": 25,
+                  "startColumn": 7,
+                  "startLine": 25
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "Class ApplicationTest is too large. Consider splitting it into smaller pieces."
+          },
+          "ruleId": "detekt.complexity.LargeClass"
+        }
       ],
       "tool": {
         "driver": {

@@ -16,9 +16,7 @@ class User(
     var phoneNo by UserTable.phoneNo
 
     // "firstName lastName"
-    val properName: String get() {
-        return "$firstName $lastName"
-    }
+    val properName: String get() = "$firstName $lastName"
 
     override fun toString() = properName
 }

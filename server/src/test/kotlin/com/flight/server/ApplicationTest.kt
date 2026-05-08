@@ -642,6 +642,252 @@ class ApplicationTest :
                 response.bodyAsText() shouldNotContain "My Account"
             }
         }
+
+        // Flight search tests
+        "A user can search for a flight and see the matching result" {
+            testApplication {
+                application { testModule() }
+                val response =
+                    client.get("/search") {
+                        url {
+                            parameters.append("trip_type", "one-way")
+                            parameters.append("origin", "Heathrow")
+                            parameters.append("destination", "Charles de Gaulle")
+                            parameters.append("depart_date", "2026-05-03")
+                            parameters.append("cabin_class", "economy")
+                        }
+                    }
+
+                checkForHtml(response)
+                response.bodyAsText() shouldContain "SkyJet"
+                response.bodyAsText() shouldContain "Heathrow → Charles de Gaulle"
+                response.bodyAsText() shouldContain "2026-05-03 at 08:30"
+                response.bodyAsText() shouldContain "GBP 120.00"
+            }
+        }
+
+        "A user searching for a flight with no matching result will see a no results message" {
+            testApplication {
+                application { testModule() }
+                val response =
+                    client.get("/search") {
+                        url {
+                            parameters.append("trip_type", "one-way")
+                            parameters.append("origin", "Heathrow")
+                            parameters.append("destination", "Charles de Gaulle")
+                            parameters.append("depart_date", "2026-06-01")
+                            parameters.append("cabin_class", "economy")
+                        }
+                    }
+
+                checkForHtml(response)
+                response.bodyAsText() shouldContain "No matching flights found."
+                response.bodyAsText() shouldNotContain "SkyJet"
+            }
+        }
+
+        "Updates the price when selecting different cabin classes " {
+            testApplication {
+                application { testModule() }
+                // Business class (x1.5)
+                val response1 =
+                    client.get("/search") {
+                        url {
+                            parameters.append("trip_type", "one-way")
+                            parameters.append("origin", "Heathrow")
+                            parameters.append("destination", "Barajas")
+                            parameters.append("depart_date", "2026-05-15")
+                            parameters.append("cabin_class", "business")
+                        }
+                    }
+
+                // First class (x2.0)
+                val response2 =
+                    client.get("/search") {
+                        url {
+                            parameters.append("trip_type", "one-way")
+                            parameters.append("origin", "Heathrow")
+                            parameters.append("destination", "Barajas")
+                            parameters.append("depart_date", "2026-05-15")
+                            parameters.append("cabin_class", "first")
+                        }
+                    }
+
+                checkForHtml(response1)
+                checkForHtml(response2)
+                response1.bodyAsText() shouldContain "GBP 480.00" // 320 x 1.5
+                response2.bodyAsText() shouldContain "GBP 640.00" // 320 x 2.0
+            }
+        }
+
+        "Manage page shows 'No upcoming bookings.' when user has no bookings" {
+            testApplication {
+                application { testModule() }
+                val client = createClient { install(HttpCookies) }
+                client.post("/login") {
+                    header(
+                        HttpHeaders.ContentType,
+                        ContentType.Application.FormUrlEncoded.toString(),
+                    )
+                    setBody(
+                        listOf(
+                            "email" to "alice@gmail.com",
+                            "password" to "AliceTest_01",
+                        ).formUrlEncode(),
+                    )
+                }
+                val response = client.get("/manage").also { checkForHtml(it) }
+                response.bodyAsText() shouldContain "No upcoming bookings."
+            }
+        }
+
+        "Manage page shows 'No completed bookings.' when user has no bookings" {
+            testApplication {
+                application { testModule() }
+                val client = createClient { install(HttpCookies) }
+                client.post("/login") {
+                    header(
+                        HttpHeaders.ContentType,
+                        ContentType.Application.FormUrlEncoded.toString(),
+                    )
+                    setBody(
+                        listOf(
+                            "email" to "alice@gmail.com",
+                            "password" to "AliceTest_01",
+                        ).formUrlEncode(),
+                    )
+                }
+                val response = client.get("/manage").also { checkForHtml(it) }
+                response.bodyAsText() shouldContain "No completed bookings."
+            }
+        }
+
+        "Manage page upcoming tab shows the user's upcoming bookings" {
+            testApplication {
+                application { testModule() }
+                val client = createClient { install(HttpCookies) }
+                client.post("/login") {
+                    header(
+                        HttpHeaders.ContentType,
+                        ContentType.Application.FormUrlEncoded.toString(),
+                    )
+                    setBody(
+                        listOf(
+                            "email" to "johndoe@gmail.com",
+                            "password" to "Password123",
+                        ).formUrlEncode(),
+                    )
+                }
+                val text = client.get("/manage").also { checkForHtml(it) }.bodyAsText()
+                val upcomingSection =
+                    text
+                        .substringAfter("id=\"section-upcoming\"")
+                        .substringBefore("id=\"section-completed\"")
+                upcomingSection shouldContain "2026-09-10"
+                upcomingSection shouldContain "2026-10-20"
+            }
+        }
+
+        "Manage page upcoming bookings are ordered by closest date first" {
+            testApplication {
+                application { testModule() }
+                val client = createClient { install(HttpCookies) }
+                client.post("/login") {
+                    header(
+                        HttpHeaders.ContentType,
+                        ContentType.Application.FormUrlEncoded.toString(),
+                    )
+                    setBody(
+                        listOf(
+                            "email" to "johndoe@gmail.com",
+                            "password" to "Password123",
+                        ).formUrlEncode(),
+                    )
+                }
+                val text = client.get("/manage").also { checkForHtml(it) }.bodyAsText()
+                val upcomingSection =
+                    text
+                        .substringAfter("id=\"section-upcoming\"")
+                        .substringBefore("id=\"section-completed\"")
+                (upcomingSection.indexOf("2026-09-10") < upcomingSection.indexOf("2026-10-20")) shouldBe true
+            }
+        }
+
+        "Manage page completed tab shows the user's completed bookings" {
+            testApplication {
+                application { testModule() }
+                val client = createClient { install(HttpCookies) }
+                client.post("/login") {
+                    header(
+                        HttpHeaders.ContentType,
+                        ContentType.Application.FormUrlEncoded.toString(),
+                    )
+                    setBody(
+                        listOf(
+                            "email" to "johndoe@gmail.com",
+                            "password" to "Password123",
+                        ).formUrlEncode(),
+                    )
+                }
+                val text = client.get("/manage").also { checkForHtml(it) }.bodyAsText()
+                val completedSection = text.substringAfter("id=\"section-completed\"")
+                completedSection shouldContain "2026-03-24"
+                completedSection shouldContain "2026-05-03"
+            }
+        }
+
+        "Manage page completed bookings are ordered by latest date first" {
+            testApplication {
+                application { testModule() }
+                val client = createClient { install(HttpCookies) }
+                client.post("/login") {
+                    header(
+                        HttpHeaders.ContentType,
+                        ContentType.Application.FormUrlEncoded.toString(),
+                    )
+                    setBody(
+                        listOf(
+                            "email" to "johndoe@gmail.com",
+                            "password" to "Password123",
+                        ).formUrlEncode(),
+                    )
+                }
+                val text = client.get("/manage").also { checkForHtml(it) }.bodyAsText()
+                val completedSection = text.substringAfter("id=\"section-completed\"")
+                (completedSection.indexOf("2026-05-03") < completedSection.indexOf("2026-03-24")) shouldBe true
+            }
+        }
+
+        "Manage this booking button links to the booking actions page" {
+            testApplication {
+                application { testModule() }
+                val client = createClient { install(HttpCookies) }
+                client.post("/login") {
+                    header(
+                        HttpHeaders.ContentType,
+                        ContentType.Application.FormUrlEncoded.toString(),
+                    )
+                    setBody(
+                        listOf(
+                            "email" to "johndoe@gmail.com",
+                            "password" to "Password123",
+                        ).formUrlEncode(),
+                    )
+                }
+                val manageText = client.get("/manage").also { checkForHtml(it) }.bodyAsText()
+                val upcomingSection =
+                    manageText
+                        .substringAfter("id=\"section-upcoming\"")
+                        .substringBefore("id=\"section-completed\"")
+                val bookingId =
+                    upcomingSection
+                        .substringAfter("href=\"/manage/")
+                        .substringBefore("\"")
+                val response = client.get("/manage/$bookingId").also { checkForHtml(it) }
+                response.bodyAsText() shouldContain "Booking #$bookingId"
+                response.bodyAsText() shouldContain "What would you like to do?"
+            }
+        }
     })
 
 fun checkForHtml(response: HttpResponse) {

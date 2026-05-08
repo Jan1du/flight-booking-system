@@ -4,7 +4,6 @@
     <ul>
         <li><a href="/" class="{{ active_nav == 'book' ? 'contrast active-link' : 'secondary' }}">Book</a></li>
         <li><a href="/manage" class="{{ active_nav == 'manage' ? 'contrast active-link' : 'secondary' }}">Manage</a></li>
-        <li><a href="/about" class="{{ active_nav == 'about' ? 'contrast active-link' : 'secondary' }}">About us</a></li>
     </ul>
 
     <ul>
