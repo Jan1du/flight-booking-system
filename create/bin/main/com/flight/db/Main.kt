@@ -27,8 +27,8 @@ fun main(args: Array<String>) {
             addLogger(StdOutSqlLogger)
         }
 
-        SchemaUtils.drop(UserTable, AirportTable, AirlineTable, FlightTable)
-        SchemaUtils.create(UserTable, AirportTable, AirlineTable, FlightTable)
+        SchemaUtils.drop(UserTable, BookingTable, TicketTable, AirportTable, AirlineTable, FlightTable)
+        SchemaUtils.create(UserTable, BookingTable, TicketTable, AirportTable, AirlineTable, FlightTable)
 
         addUsers()
         addFlights()
