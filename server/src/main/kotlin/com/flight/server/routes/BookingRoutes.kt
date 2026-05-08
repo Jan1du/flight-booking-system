@@ -67,8 +67,8 @@ suspend fun ApplicationCall.passengerDetails() {
         val adultLastNames = mutableListOf<String>()
         val childrenFirstNames = mutableListOf<String>()
         val childrenLastNames = mutableListOf<String>()
-        // Not-null assertion allowed since session, numAdults and numChildren are checked beforehand
 
+        // Not-null assertion allowed since session, numAdults and numChildren are checked beforehand
         for (i in 1..session!!.numAdults!!) {
             val adultFirstName = formParameters["adultFirstName_$i"]
             val adultLastName = formParameters["adultLastName_$i"]
@@ -97,4 +97,49 @@ suspend fun ApplicationCall.passengerDetails() {
         )
         respondRedirect("/seat-selection")
     }
+}
+
+suspend fun ApplicationCall.displaySeatSelection() {
+    val session = sessions.get<BookingSession>()
+    if (session == null || session.numAdults == null || session.numChildren == null) {
+        respondRedirect("/search")
+    }
+
+    // Not-null assertion allowed since session, numAdults and numChildren are checked beforehand
+    val totalPassengers = session!!.numAdults!! + session.numChildren!!
+    val isReturn = session.returnFlightId != -1
+
+    respondTemplate(
+        "seat-selection.peb",
+        model =
+            mapOf(
+                "active_nav" to "book",
+                "logged_in" to isLoggedIn(),
+                "totalPassengerCount" to totalPassengers,
+                "isReturn" to isReturn,
+            ),
+    )
+}
+
+suspend fun ApplicationCall.seatInformation() {
+    val session = sessions.get<BookingSession>()
+    val formParams = receiveParameters()
+    if (session == null) {
+        respondRedirect("/search")
+    }
+
+    val outboundString = formParams["outboundSeats"] ?: ""
+    val returnString = formParams["returnSeats"] ?: ""
+
+    val outboundSeatsList = outboundString.split(",").filter { it.isNotBlank() }
+    val returnSeatsList = returnString.split(",").filter { it.isNotBlank() }
+
+    // Not-null assertion allowed since session is checked beforehand
+    val updatedSession =
+        session!!.copy(
+            selectedSeats = outboundSeatsList,
+            selectedSeatsReturn = returnSeatsList,
+        )
+    sessions.set(updatedSession)
+    respondRedirect("/payment")
 }

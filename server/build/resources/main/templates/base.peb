@@ -122,11 +122,6 @@
             color: #12355b;
         }
 
-        input[type="date"] {
-            appearance: auto !important;
-            -webkit-appearance: auto !important;
-        }
-
         h1,
         h2,
         h3 {

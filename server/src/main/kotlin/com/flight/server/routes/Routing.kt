@@ -24,6 +24,8 @@ fun Application.configureRouting() {
         authenticate("auth-session") {
             get("/passenger-info") { call.passengerDetailForm() }
             post("/passenger-info") { call.passengerDetails() }
+            get("/seat-selection") { call.displaySeatSelection() }
+            post("/seat-selection") { call.seatInformation() }
             get("/manage") { call.displayManage() }
             get("/user-info") { call.userInfoPage() }
             post("/user-info") { call.addUserInfo() }

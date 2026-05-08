@@ -16,7 +16,7 @@
         <span style="color: gray;">&#9679; Payment</span>
     </div>
 
-    <form action="/submit-passenger-info" method="POST">
+    <form action="/passenger-info" method="POST">
 
     {% if numAdults > 0 %}
         <h2 style="margin-bottom: 10px;">Adults (18+)</h2>
