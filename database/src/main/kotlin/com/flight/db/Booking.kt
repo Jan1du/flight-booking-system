@@ -18,5 +18,4 @@ class Booking(
     // Assumes all tickets in a booking share the same flight and cabin class
     val flight get() = tickets.first().flight
     val cabinClass get() = tickets.first().cabinClass
-    val passengerCount get() = tickets.count()
 }

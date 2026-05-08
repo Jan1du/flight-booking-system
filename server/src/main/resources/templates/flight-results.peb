@@ -1,10 +1,13 @@
-{% extends "base.peb" %}
+{# @pebvariable name="trip_type" type="String" #}
 {# @pebvariable name="origin" type="String" #}
 {# @pebvariable name="destination" type="String" #}
 {# @pebvariable name="depart_date" type="String" #}
+{# @pebvariable name="return_date" type="String" #}
 {# @pebvariable name="cabin_class" type="String" #}
 {# @pebvariable name="count" type="Int" #}
 {# @pebvariable name="flights" type="List<Flight>" #}
+{# @pebvariable name="price_multi" type="Double" #}
+{% extends "base.peb" %}
 
 {% block styles %}
 <style>
@@ -116,57 +119,71 @@
 {% endblock %}
 
 {% block content %}
-<h1 class="results-title">Flight Results</h1>
 
-{% if origin or destination %}
-    <p class="results-summary">
-        Showing results
-        {% if origin %}from <strong>{{ origin }}</strong>{% endif %}
-        {% if destination %} to <strong>{{ destination }}</strong>{% endif %}
-        {% if depart_date %} on <strong>{{ depart_date }}</strong>{% endif %}
-    </p>
-{% endif %}
+<div id="flight-container">
+    <h1 class="results-title">Flight Results</h1>
 
-{% if count > 0 %}
-    {% for flight in flights %}
-        <article class="flight-card">
-            <div>
-                <h3 class="airline-name">{{ flight.airline.name }}</h3>
-                <p class="route-text">
-                    {{ flight.departureAirport.name }} → {{ flight.arrivalAirport.name }}
-                </p>
-            </div>
+    {% if origin or destination %}
+        <p class="results-summary">
+            Showing results
+            {% if origin %}from <strong>{{ origin }}</strong>{% endif %}
+            {% if destination %} to <strong>{{ destination }}</strong>{% endif %}
+            {% if depart_date %} on <strong>{{ depart_date }}</strong>{% endif %}
+        </p>
+    {% endif %}
 
-            <div class="flight-details">
+    {% if count > 0 %}
+        {% for flight in flights %}
+            <article class="flight-card">
                 <div>
-                    <p class="detail-label">Depart</p>
-                    <p class="detail-value">{{ flight.date }} at {{ flight.departureTime }}</p>
+                    <h3 class="airline-name">{{ flight.airline.name }}</h3>
+                    <p class="route-text">
+                        {{ flight.departureAirport.name }} → {{ flight.arrivalAirport.name }}
+                    </p>
                 </div>
 
-                <div>
-                    <p class="detail-label">Arrival</p>
-                    <p class="detail-value">{{ flight.arrivalTime }}</p>
+                <div class="flight-details">
+                    <div>
+                        <p class="detail-label">Depart</p>
+                        <p class="detail-value">{{ flight.date }} at {{ flight.departureTime }}</p>
+                    </div>
+
+                    <div>
+                        <p class="detail-label">Arrival</p>
+                        <p class="detail-value">{{ flight.arrivalTime }}</p>
+                    </div>
+
+                    <div>
+                        <p class="detail-label">Cabin</p>
+                        <p class="detail-value">{{ cabin_class }}</p>
+                    </div>
+
+                    <div>
+                        <p class="detail-label">Discounts</p>
+                        <p class="detail-value">None</p>
+                    </div>
                 </div>
 
-                <div>
-                    <p class="detail-label">Cabin</p>
-                    <p class="detail-value">{{ cabin_class }}</p>
+                <div class="price-box">
+                    <p class="price-label">Total price</p>
+                    <p class="price">GBP {{ (flight.defaultPrice * price_multi) | numberformat("0.00") }}</p>
+                    {% if trip_type == 'return' %}
+                    <button hx-get="/search-return?outbound={{ flight.id }}&origin={{ destination }}&destination={{ origin }}&depart_date={{ return_date }}&cabin_class={{ cabin_class }}"
+                            hx-target="#flight-container"
+                            hx-swap="outerHTML">
+                        Select
+                    </button>
+                    {% else %}
+                    <a href="/passenger-info?outbound={{ flight.id }}">
+                        <button type="button">Select</button>
+                    </a>
+                    {% endif %}
                 </div>
-
-                <div>
-                    <p class="detail-label">Discounts</p>
-                    <p class="detail-value">None</p>
-                </div>
-            </div>
-
-            <div class="price-box">
-                <p class="price-label">Total price</p>
-                <p class="price">GBP {{ flight.defaultPrice }}</p>
-                <p class="discount-text">No discounts currently available</p>
-            </div>
-        </article>
-    {% endfor %}
-{% else %}
-    <p class="no-results">No matching flights found.</p>
-{% endif %}
+            </article>
+        {% endfor %}
+    {% else %}
+        <p class="no-results">No matching flights found.</p>
+    {% endif %}
+</div>
 {% endblock %}
+

@@ -11,8 +11,8 @@ object TicketTable : IntIdTable("tickets") {
     val booking = reference("booking_id", BookingTable, ReferenceOption.CASCADE)
     val flight = reference("flight_id", FlightTable, ReferenceOption.CASCADE)
 
-    val passengerFirstName = varchar("passenger_first_name", MAX_USERNAME_LENGTH)
-    val passengerLastName = varchar("passenger_last_name", MAX_USERNAME_LENGTH)
+    val passengerFirstName = varchar("passenger_first_name", MAX_USERNAME_LENGTH).nullable()
+    val passengerLastName = varchar("passenger_last_name", MAX_USERNAME_LENGTH).nullable()
     val seatNumber = varchar("seat_number", MAX_SEAT_NUMBER_LENGTH).nullable()
     val cabinClass = varchar("cabin_class", MAX_CABIN_CLASS_LENGTH)
     val ticketPrice = decimal("ticket_price", PRICE_PRECISION, PRICE_SCALE)

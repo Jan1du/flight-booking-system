@@ -6,7 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Book your flight{% endblock %}</title>
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.red.min.css"
+    >
 
     {# Tweaking the css #}
     <style>
@@ -141,6 +144,8 @@
 
     {% block styles %}
     {% endblock %}
+
+    <script src="/static/htmx.min.js"></script>
 </head>
 
 <body>
@@ -154,6 +159,7 @@
     </main>
 
     {% block scripts %}
+
     {% endblock %}
 </body>
 </html>

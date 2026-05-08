@@ -811,3 +811,12 @@ java.sql.SQLClientInfoException: Client info name 'ApplicationName' not supporte
 	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
 	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
 	at java.base/java.lang.Thread.run(Thread.java:1583)
+2026-05-08 11:01:10.727657+01:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "BOOKING" not found; SQL statement:
+SELECT BOOKING.ID, BOOKING.USER_ID, BOOKING.BOOKING_DATE, BOOKING.PAX_COUNT, BOOKING.STATUS FROM BOOKING WHERE BOOKING.USER_ID = ? [42102-240]
+2026-05-08 11:01:10.776286+01:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "BOOKING" not found; SQL statement:
+SELECT BOOKING.ID, BOOKING.USER_ID, BOOKING.BOOKING_DATE, BOOKING.PAX_COUNT, BOOKING.STATUS FROM BOOKING WHERE BOOKING.USER_ID = ? [42102-240]
+2026-05-08 11:01:10.878712+01:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "BOOKING" not found; SQL statement:
+SELECT BOOKING.ID, BOOKING.USER_ID, BOOKING.BOOKING_DATE, BOOKING.PAX_COUNT, BOOKING.STATUS FROM BOOKING WHERE BOOKING.USER_ID = ? [42102-240]

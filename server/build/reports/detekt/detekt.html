@@ -157,11 +157,11 @@
 
 <div>
   <ul>
-    <li>112 number of properties</li>
-    <li>34 number of functions</li>
-    <li>2 number of classes</li>
+    <li>171 number of properties</li>
+    <li>44 number of functions</li>
+    <li>3 number of classes</li>
     <li>5 number of packages</li>
-    <li>12 number of kt files</li>
+    <li>16 number of kt files</li>
   </ul>
 </div>
 
@@ -170,23 +170,55 @@
 
 <div>
   <ul>
-    <li>1,490 lines of code (loc)</li>
-    <li>1,317 source lines of code (sloc)</li>
-    <li>934 logical lines of code (lloc)</li>
-    <li>36 comment lines of code (cloc)</li>
-    <li>82 cyclomatic complexity (mcc)</li>
-    <li>45 cognitive complexity</li>
-    <li>1 number of total code smells</li>
+    <li>1,945 lines of code (loc)</li>
+    <li>1,710 source lines of code (sloc)</li>
+    <li>1,223 logical lines of code (lloc)</li>
+    <li>47 comment lines of code (cloc)</li>
+    <li>136 cyclomatic complexity (mcc)</li>
+    <li>93 cognitive complexity</li>
+    <li>5 number of total code smells</li>
     <li>2% comment source ratio</li>
-    <li>87 mcc per 1,000 lloc</li>
-    <li>1 code smells per 1,000 lloc</li>
+    <li>111 mcc per 1,000 lloc</li>
+    <li>4 code smells per 1,000 lloc</li>
   </ul>
 </div>
 
 
 <h2>Findings</h2>
-<div>Total: 1
-  <h3>complexity: 1</h3>
+<div>Total: 5
+  <h3>complexity: 5</h3>
+  <details id="ComplexCondition" open="open">
+    <summary class="rule-container"><span class="rule">ComplexCondition: 1 </span><span class="description">Complex conditions should be simplified and extracted into well-named methods if necessary.</span></summary>
+<a href="https://detekt.dev/docs/rules/complexity#complexcondition">Documentation</a>
+    <ul>
+      <li><span class="location">C:/Users/janid/Documents/MyProjects/flight-booking-system/server/src/main/kotlin/com/flight/server/routes/BookingRoutes.kt:194:13</span><span class="message">This condition is too complex (6). Defined complexity threshold for conditions is set to '4'</span>
+        <pre><code><span class="lineno"> 191 </span>        // Allows non-null assertions for userSession, bookingSession,
+<span class="lineno"> 192 </span>        // flightId, numAdults, numChildren and cabinClass
+<span class="lineno"> 193 </span>        if (
+<span class="lineno"> 194 </span>            <span class="error">bookingSession == null ||</span>
+<span class="lineno"> 195 </span><span class="error">            userSession == null ||</span>
+<span class="lineno"> 196 </span><span class="error">            bookingSession.flightId == null ||</span>
+<span class="lineno"> 197 </span><span class="error">            bookingSession.numAdults == null ||</span>
+</code></pre>
+      </li>
+    </ul>
+  </details>
+  <details id="CyclomaticComplexMethod" open="open">
+    <summary class="rule-container"><span class="rule">CyclomaticComplexMethod: 1 </span><span class="description">Prefer splitting up complex methods into smaller, easier to test methods.</span></summary>
+<a href="https://detekt.dev/docs/rules/complexity#cyclomaticcomplexmethod">Documentation</a>
+    <ul>
+      <li><span class="location">C:/Users/janid/Documents/MyProjects/flight-booking-system/server/src/main/kotlin/com/flight/server/routes/BookingRoutes.kt:186:29</span><span class="message">The function addBooking appears to be too complex based on Cyclomatic Complexity (complexity: 17). Defined complexity threshold for methods is set to '15'</span>
+        <pre><code><span class="lineno"> 183 </span>    )
+<span class="lineno"> 184 </span>}
+<span class="lineno"> 185 </span>
+<span class="lineno"> 186 </span>suspend fun ApplicationCall.<span class="error">addBooking</span>() {
+<span class="lineno"> 187 </span>    suspendTransaction {
+<span class="lineno"> 188 </span>        val bookingSession = sessions.get&lt;BookingSession&gt;()
+<span class="lineno"> 189 </span>        val userSession = sessions.get&lt;UserSession&gt;()
+</code></pre>
+      </li>
+    </ul>
+  </details>
   <details id="LargeClass" open="open">
     <summary class="rule-container"><span class="rule">LargeClass: 1 </span><span class="description">One class should have one responsibility. Large classes tend to handle many things at once. Split up large classes into smaller classes that are easier to understand.</span></summary>
 <a href="https://detekt.dev/docs/rules/complexity#largeclass">Documentation</a>
@@ -203,10 +235,42 @@
       </li>
     </ul>
   </details>
+  <details id="LongMethod" open="open">
+    <summary class="rule-container"><span class="rule">LongMethod: 1 </span><span class="description">One method should have one responsibility. Long methods tend to handle many things at once. Prefer smaller methods to make them easier to understand.</span></summary>
+<a href="https://detekt.dev/docs/rules/complexity#longmethod">Documentation</a>
+    <ul>
+      <li><span class="location">C:/Users/janid/Documents/MyProjects/flight-booking-system/server/src/main/kotlin/com/flight/server/routes/BookingRoutes.kt:186:29</span><span class="message">The function addBooking is too long (96). The maximum length is 60.</span>
+        <pre><code><span class="lineno"> 183 </span>    )
+<span class="lineno"> 184 </span>}
+<span class="lineno"> 185 </span>
+<span class="lineno"> 186 </span>suspend fun ApplicationCall.<span class="error">addBooking</span>() {
+<span class="lineno"> 187 </span>    suspendTransaction {
+<span class="lineno"> 188 </span>        val bookingSession = sessions.get&lt;BookingSession&gt;()
+<span class="lineno"> 189 </span>        val userSession = sessions.get&lt;UserSession&gt;()
+</code></pre>
+      </li>
+    </ul>
+  </details>
+  <details id="LongParameterList" open="open">
+    <summary class="rule-container"><span class="rule">LongParameterList: 1 </span><span class="description">The more parameters a function has the more complex it is. Long parameter lists are often used to control complex algorithms and violate the Single Responsibility Principle. Prefer functions with short parameter lists.</span></summary>
+<a href="https://detekt.dev/docs/rules/complexity#longparameterlist">Documentation</a>
+    <ul>
+      <li><span class="location">C:/Users/janid/Documents/MyProjects/flight-booking-system/server/src/main/kotlin/com/flight/server/routes/BookingRoutes.kt:25:22</span><span class="message">The function addTicket(currentBooking: Booking, currentFlight: Flight, firstName: String, lastName: String, cabin: String, seatnumber: String, price: BigDecimal) has too many parameters. The current threshold is set to 6.</span>
+        <pre><code><span class="lineno">  22 </span>const val BIG_DECIMAL_SCALE: Int = 2
+<span class="lineno">  23 </span>const val HALF: Double = 0.5
+<span class="lineno">  24 </span>
+<span class="lineno">  25 </span>private fun addTicket<span class="error">(</span>
+<span class="lineno">  26 </span><span class="error">    currentBooking: Booking,</span>
+<span class="lineno">  27 </span><span class="error">    currentFlight: Flight,</span>
+<span class="lineno">  28 </span><span class="error">    firstName: String,</span>
+</code></pre>
+      </li>
+    </ul>
+  </details>
 </div>
 
 
-generated with <a href="https://detekt.dev/">detekt version 1.23.8</a> on 2026-05-08 09:11:13 UTC.
+generated with <a href="https://detekt.dev/">detekt version 1.23.8</a> on 2026-05-08 13:26:52 UTC.
 
 </body>
 </html>

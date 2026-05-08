@@ -1,6 +1,6 @@
 rootProject.name = "flight-booking-system"
 
-include("create", "database", "query", "server")
+include("create", "database", "server")
 
 dependencyResolutionManagement {
     repositories {
