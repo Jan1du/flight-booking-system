@@ -1,0 +1,113 @@
+{% extends "base.peb" %}
+{# @pebvariable name="upcomingBookings" type="List<com.flight.db.Booking>" #}
+{# @pebvariable name="completedBookings" type="List<com.flight.db.Booking>" #}
+
+{% block title %}Manage Bookings{% endblock %}
+
+{% block styles %}
+<style>
+    .tab-bar {
+        display: flex;
+        gap: 0;
+        border-bottom: 2px solid var(--pico-muted-border-color);
+        margin-bottom: 1.5rem;
+    }
+
+    .tab-btn {
+        background: none;
+        border: none;
+        border-bottom: 3px solid transparent;
+        border-radius: 0;
+        margin-bottom: -2px;
+        padding: 0.6rem 1.25rem;
+        font-size: 1rem;
+        cursor: pointer;
+        color: var(--pico-muted-color);
+        box-shadow: none;
+        width: auto;
+    }
+
+    .tab-btn.active {
+        color: var(--pico-color);
+        border-bottom-color: var(--pico-primary);
+        font-weight: 600;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<h1>Manage Bookings</h1>
+
+<div class="tab-bar">
+    <button class="tab-btn active" id="tab-upcoming" onclick="showTab('upcoming')">Upcoming</button>
+    <button class="tab-btn" id="tab-completed" onclick="showTab('completed')">Completed</button>
+</div>
+
+{# Upcoming bookings — sorted closest first by the route handler #}
+<div id="section-upcoming">
+    {% if upcomingBookings is not empty %}
+        {% for booking in upcomingBookings %}
+            <article style="border: 1px solid var(--pico-muted-border-color); border-radius: 12px; padding: 1.5rem; margin-bottom: 1.25rem;">
+                <div style="display: flex; justify-content: space-between; align-items: start; gap: 1rem; flex-wrap: wrap;">
+                    <div>
+                        <p style="margin-bottom: 0.2rem; font-size: 0.85rem; color: var(--pico-muted-color);">Booking ID</p>
+                        <p style="margin-bottom: 0.75rem; font-size: 1rem; font-weight: 700;">#{{ booking.id }}</p>
+                        <p style="margin-bottom: 0.35rem;"><strong>From:</strong> {{ booking.flight.departureAirport.name }}</p>
+                        <p style="margin-bottom: 0.35rem;"><strong>To:</strong> {{ booking.flight.arrivalAirport.name }}</p>
+                        <p style="margin-bottom: 0.35rem;"><strong>Date:</strong> {{ booking.flight.date }}</p>
+                        <p style="margin-bottom: 0.35rem;">
+                            <strong>Departure time:</strong> {{ booking.flight.departureTime }}
+                            &ndash;
+                            <strong>Arrival:</strong> {{ booking.flight.arrivalTime }}
+                        </p>
+                        <p style="margin-bottom: 0.35rem;"><strong>Cabin class:</strong> {{ booking.cabinClass }}</p>
+                        <p style="margin-bottom: 0;"><strong>Passengers:</strong> {{ booking.paxCount }}</p>
+                    </div>
+                    <div style="display: flex; align-items: flex-end;">
+                        <a href="/manage/{{ booking.id }}" role="button">Manage this booking</a>
+                    </div>
+                </div>
+            </article>
+        {% endfor %}
+    {% else %}
+        <p>No upcoming bookings.</p>
+    {% endif %}
+</div>
+
+{# Completed bookings — sorted latest first by the route handler #}
+<div id="section-completed" style="display: none;">
+    {% if completedBookings is not empty %}
+        {% for booking in completedBookings %}
+            <article style="border: 1px solid var(--pico-muted-border-color); border-radius: 12px; padding: 1.5rem; margin-bottom: 1.25rem; opacity: 0.75;">
+                <p style="margin-bottom: 0.2rem; font-size: 0.85rem; color: var(--pico-muted-color);">Booking ID</p>
+                <p style="margin-bottom: 0.75rem; font-size: 1rem; font-weight: 700;">#{{ booking.id }}</p>
+                <p style="margin-bottom: 0.35rem;"><strong>From:</strong> {{ booking.flight.departureAirport.name }}</p>
+                <p style="margin-bottom: 0.35rem;"><strong>To:</strong> {{ booking.flight.arrivalAirport.name }}</p>
+                <p style="margin-bottom: 0.35rem;"><strong>Date:</strong> {{ booking.flight.date }}</p>
+                <p style="margin-bottom: 0.35rem;">
+                    <strong>Departure time:</strong> {{ booking.flight.departureTime }}
+                    &ndash;
+                    <strong>Arrival:</strong> {{ booking.flight.arrivalTime }}
+                </p>
+                <p style="margin-bottom: 0.35rem;"><strong>Cabin class:</strong> {{ booking.cabinClass }}</p>
+                <p style="margin-bottom: 0;"><strong>Passengers:</strong> {{ booking.paxCount }}</p>
+            </article>
+        {% endfor %}
+    {% else %}
+        <p>No completed bookings.</p>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    function showTab(tab) {
+        document.getElementById('section-upcoming').style.display = tab === 'upcoming' ? 'block' : 'none';
+        document.getElementById('section-completed').style.display = tab === 'completed' ? 'block' : 'none';
+
+        document.getElementById('tab-upcoming').classList.toggle('active', tab === 'upcoming');
+        document.getElementById('tab-completed').classList.toggle('active', tab === 'completed');
+    }
+</script>
+{% endblock %}
+

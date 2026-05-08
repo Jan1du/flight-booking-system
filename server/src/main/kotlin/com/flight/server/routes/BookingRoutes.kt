@@ -1,18 +1,47 @@
 package com.flight.server.routes
 
+import com.flight.db.Booking
+import com.flight.db.Flight
+import com.flight.db.Ticket
 import com.flight.server.auth.BookingSession
+import com.flight.server.auth.UserSession
+import com.flight.server.repos.findUser
 import io.ktor.server.application.ApplicationCall
 import io.ktor.server.pebble.respondTemplate
 import io.ktor.server.request.receiveParameters
 import io.ktor.server.response.respondRedirect
+import io.ktor.server.sessions.clear
 import io.ktor.server.sessions.get
 import io.ktor.server.sessions.sessions
 import io.ktor.server.sessions.set
 import io.ktor.server.util.getOrFail
 import org.jetbrains.exposed.v1.jdbc.transactions.suspendTransaction
+import java.math.BigDecimal
 import java.time.LocalDate
 
 const val MAX_CHILD_AGE: Long = 18
+const val BIG_DECIMAL_SCALE: Int = 2
+const val HALF: Double = 0.5
+
+private fun addTicket(
+    currentBooking: Booking,
+    currentFlight: Flight,
+    firstName: String,
+    lastName: String,
+    cabin: String,
+    seatnumber: String,
+    price: BigDecimal,
+) {
+    Ticket.new {
+        booking = currentBooking
+        flight = currentFlight
+        passengerFirstName = firstName
+        passengerLastName = lastName
+        cabinClass = cabin
+        seatNumber = seatnumber
+        ticketPrice = price
+    }
+}
 
 suspend fun ApplicationCall.passengerDetailForm() {
     suspendTransaction {
@@ -142,4 +171,124 @@ suspend fun ApplicationCall.seatInformation() {
         )
     sessions.set(updatedSession)
     respondRedirect("/payment")
+}
+
+suspend fun ApplicationCall.displayPaymentForm() {
+    respondTemplate(
+        "payment-form.peb",
+        model =
+            mapOf(
+                "active_nav" to "book",
+                "logged_in" to isLoggedIn(),
+            ),
+    )
+}
+
+suspend fun ApplicationCall.addBooking() {
+    suspendTransaction {
+        val bookingSession = sessions.get<BookingSession>()
+        val userSession = sessions.get<UserSession>()
+
+        // Allows non-null assertions for userSession, bookingSession,
+        // flightId, numAdults, numChildren and cabinClass
+        if (
+            bookingSession == null ||
+            userSession == null ||
+            bookingSession.flightId == null ||
+            bookingSession.numAdults == null ||
+            bookingSession.numChildren == null ||
+            bookingSession.cabinClass == null
+        ) {
+            respondRedirect("/login")
+        }
+        val totalPassengers = bookingSession!!.numAdults!! + bookingSession.numChildren!!
+        val currentUser = findUser(userSession!!.email)
+        if (currentUser == null) {
+            respondRedirect("/login")
+        }
+
+        // Non-null assertion allowed because we checked currentUser == null
+        val currentBooking =
+            Booking.new {
+                user = currentUser!!
+                bookingDate = LocalDate.now().toString()
+                paxCount = totalPassengers
+                status = "upcoming"
+            }
+        val outboundFlight = Flight.findById(bookingSession.flightId!!)
+        if (outboundFlight == null) {
+            respondRedirect("/search")
+        }
+
+        val priceMulti =
+            getPriceMulti(
+                bookingSession.cabinClass!!,
+            ).toBigDecimal().setScale(BIG_DECIMAL_SCALE, java.math.RoundingMode.HALF_UP)
+
+        for (i in 0..bookingSession.numAdults - 1) {
+            addTicket(
+                currentBooking = currentBooking,
+                currentFlight = outboundFlight!!,
+                bookingSession.passengerFirstNamesAdult[i],
+                bookingSession.passengerLastNamesAdult[i],
+                bookingSession.cabinClass,
+                bookingSession.selectedSeats[i],
+                outboundFlight.defaultPrice * priceMulti,
+            )
+
+            if (bookingSession.returnFlightId != -1 && bookingSession.returnFlightId != null) {
+                val returnFlight = Flight.findById(bookingSession.returnFlightId)
+                if (returnFlight == null) {
+                    respondRedirect("/search")
+                }
+                addTicket(
+                    currentBooking = currentBooking,
+                    currentFlight = returnFlight!!,
+                    bookingSession.passengerFirstNamesAdult[i],
+                    bookingSession.passengerLastNamesAdult[i],
+                    bookingSession.cabinClass,
+                    bookingSession.selectedSeatsReturn[i],
+                    outboundFlight.defaultPrice * priceMulti,
+                )
+            }
+        }
+
+        for (i in 0..bookingSession.numChildren - 1) {
+            addTicket(
+                currentBooking = currentBooking,
+                currentFlight = outboundFlight!!,
+                bookingSession.passengerFirstNamesChild[i],
+                bookingSession.passengerLastNamesChild[i],
+                bookingSession.cabinClass,
+                bookingSession.selectedSeats[i],
+                outboundFlight.defaultPrice * priceMulti * BigDecimal(HALF),
+            )
+
+            if (bookingSession.returnFlightId != -1 && bookingSession.returnFlightId != null) {
+                val returnFlight = Flight.findById(bookingSession.returnFlightId)
+                if (returnFlight == null) {
+                    respondRedirect("/search")
+                }
+                addTicket(
+                    currentBooking = currentBooking,
+                    currentFlight = returnFlight!!,
+                    bookingSession.passengerFirstNamesChild[i],
+                    bookingSession.passengerLastNamesChild[i],
+                    bookingSession.cabinClass,
+                    bookingSession.selectedSeatsReturn[i],
+                    outboundFlight.defaultPrice * priceMulti * BigDecimal(HALF),
+                )
+            }
+        }
+
+        sessions.clear<BookingSession>()
+        respondTemplate(
+            "success.peb",
+            model =
+                mapOf(
+                    "active_nav" to "book",
+                    "logged_in" to isLoggedIn(),
+                ),
+        )
+    }
 }

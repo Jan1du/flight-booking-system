@@ -1,0 +1,10 @@
+[90mC:\Users\janid\Documents\MyProjects\flight-booking-system\server\src\main\kotlin\com\flight\server\routes\[0mRouting.kt[90m:[0m4[90m:1:[0m Unused import [90m(standard:no-unused-imports)[0m
+[90mC:\Users\janid\Documents\MyProjects\flight-booking-system\server\src\main\kotlin\com\flight\server\routes\[0mRouting.kt[90m:[0m5[90m:1:[0m Unused import [90m(standard:no-unused-imports)[0m
+[90mC:\Users\janid\Documents\MyProjects\flight-booking-system\server\src\main\kotlin\com\flight\server\routes\[0mRouting.kt[90m:[0m6[90m:1:[0m Unused import [90m(standard:no-unused-imports)[0m
+[90mC:\Users\janid\Documents\MyProjects\flight-booking-system\server\src\main\kotlin\com\flight\server\routes\[0mRouting.kt[90m:[0m7[90m:1:[0m Unused import [90m(standard:no-unused-imports)[0m
+[90mC:\Users\janid\Documents\MyProjects\flight-booking-system\server\src\main\kotlin\com\flight\server\routes\[0mRouting.kt[90m:[0m12[90m:1:[0m Unused import [90m(standard:no-unused-imports)[0m
+[90mC:\Users\janid\Documents\MyProjects\flight-booking-system\server\src\main\kotlin\com\flight\server\routes\[0mRouting.kt[90m:[0m13[90m:1:[0m Unused import [90m(standard:no-unused-imports)[0m
+[90mC:\Users\janid\Documents\MyProjects\flight-booking-system\server\src\main\kotlin\com\flight\server\routes\[0mRouting.kt[90m:[0m19[90m:1:[0m Unused import [90m(standard:no-unused-imports)[0m
+
+Summary error count (descending) by rule:
+  standard:no-unused-imports: 7

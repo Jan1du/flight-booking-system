@@ -29,6 +29,8 @@ fun Application.configureRouting() {
             post("/passenger-info") { call.passengerDetails() }
             get("/seat-selection") { call.displaySeatSelection() }
             post("/seat-selection") { call.seatInformation() }
+            get("/payment") { call.displayPaymentForm() }
+            post("/payment") { call.addBooking() }
             get("/manage") { call.displayManage() }
             get("/manage/{id}") { call.displayBookingActions() }
             get("/user-info") { call.userInfoPage() }
@@ -45,59 +47,3 @@ fun Application.configureRouting() {
 }
 
 fun ApplicationCall.isLoggedIn() = sessions.get<UserSession>() != null
-
-private suspend fun ApplicationCall.displayManage() {
-    suspendTransaction {
-        // user and session should always be non-null since the manage page is only reached once logged in
-        val session = sessions.get<UserSession>()
-        val user = findUser(session!!.email)
-
-        if (user!!.firstName == null) {
-            respondRedirect("/user-info")
-        } else {
-            val upcomingBookings = findUpcomingBookingsByUser(user)
-            val completedBookings = findCompletedBookingsByUser(user)
-            respondTemplate(
-                "manage.peb",
-                model =
-                    mapOf(
-                        "active_nav" to "manage",
-                        "logged_in" to true,
-                        "upcomingBookings" to upcomingBookings,
-                        "completedBookings" to completedBookings,
-                    ),
-            )
-        }
-    }
-}
-
-private suspend fun ApplicationCall.displayBookingActions() {
-    suspendTransaction {
-        val session = sessions.get<UserSession>()
-        val user = findUser(session!!.email)
-        val bookingId = parameters["id"]?.toIntOrNull()
-
-        if (bookingId == null) {
-            respondRedirect("/manage")
-            return@suspendTransaction
-        }
-
-        val booking = findBookingById(bookingId)
-
-        // Redirect if booking not found, does not belong to the logged-in user, or is already completed
-        if (booking == null || booking.user.id != user!!.id || booking.status == "Completed") {
-            respondRedirect("/manage")
-            return@suspendTransaction
-        }
-
-        respondTemplate(
-            "booking-actions.peb",
-            model =
-                mapOf(
-                    "active_nav" to "manage",
-                    "logged_in" to true,
-                    "booking" to booking,
-                ),
-        )
-    }
-}

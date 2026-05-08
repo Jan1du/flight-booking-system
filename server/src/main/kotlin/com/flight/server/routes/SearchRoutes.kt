@@ -32,7 +32,7 @@ private fun getFlightInfo(
     return flights
 }
 
-private fun getPriceMulti(cabin: String) =
+fun ApplicationCall.getPriceMulti(cabin: String) =
     when (cabin) {
         "economy" -> DEFAULT_PRICE_MULTI
         "business" -> BUSINESS_PRICE_MULTI
